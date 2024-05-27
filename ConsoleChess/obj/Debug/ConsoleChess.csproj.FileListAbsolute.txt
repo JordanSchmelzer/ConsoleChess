@@ -1,0 +1,7 @@
+C:\Users\jorda\source\repos\ConsoleChess\ConsoleChess\bin\Debug\ConsoleChess.exe.config
+C:\Users\jorda\source\repos\ConsoleChess\ConsoleChess\bin\Debug\ConsoleChess.exe
+C:\Users\jorda\source\repos\ConsoleChess\ConsoleChess\bin\Debug\ConsoleChess.pdb
+C:\Users\jorda\source\repos\ConsoleChess\ConsoleChess\obj\Debug\ConsoleChess.csproj.AssemblyReference.cache
+C:\Users\jorda\source\repos\ConsoleChess\ConsoleChess\obj\Debug\ConsoleChess.csproj.CoreCompileInputs.cache
+C:\Users\jorda\source\repos\ConsoleChess\ConsoleChess\obj\Debug\ConsoleChess.exe
+C:\Users\jorda\source\repos\ConsoleChess\ConsoleChess\obj\Debug\ConsoleChess.pdb
