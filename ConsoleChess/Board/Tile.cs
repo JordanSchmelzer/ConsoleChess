@@ -76,7 +76,7 @@ namespace ConsoleChess
         {
             Console.BackgroundColor = this.BackColor;
             Console.ForegroundColor = this.ForeColor;
-            Console.Write(this.RenderString);
+            Console.Write(this.RenderString); 
         }
     }
 }

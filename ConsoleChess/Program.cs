@@ -1,28 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ConsoleChess
 {
-    internal class Program 
+    internal class Program
     {
 
         public static World world = new World();
-    
+
+        // Multiplayer stuff
+        //public static HostServer = new TcpClient();
+        //public static Client = new TcpClient();
+
         public static void Main(string[] args)
         {
             StartUp();
+            Console.ReadLine();
             //StartMenu();
+            AdjustWindowSize();
             Draw();
             GameOver();
         }
 
-        public static void StartUp() 
-        { 
+        public static void StartUp()
+        {
             Console.Clear();
         }
+
+        public static void AdjustWindowSize()
+        {
+            var maxHeight = Console.LargestWindowHeight;
+            var maxWidth = Console.LargestWindowWidth;
+            
+            //Console.BufferWidth = 100;
+
+            //Console.SetWindowSize(maxHeight, maxWidth);
+            //Console.SetBufferSize(x, y);
+        }
+
 
         public static void GameOver() 
         {
