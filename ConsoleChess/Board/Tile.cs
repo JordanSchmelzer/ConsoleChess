@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleChess
 {
-    class Tile
+    public class Tile
     {
         public int health;
         public TileType type;

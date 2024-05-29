@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace ConsoleChess
 {
-    class King : GamePiece
+    public class King : IGamePiece
     {
-        private Boolean castlingDone =false;
+        private bool castlingDone =false;
 
         public King(bool white) : base(white)
         {
 
         }
 
-        
+        override
         public bool canMove(World world, BoardSquare start, BoardSquare end)
         {
             // we can't move this piece to a spot that has a piece of the same color
@@ -29,7 +29,7 @@ namespace ConsoleChess
 
             if (x + y == 1)
             {
-                // check if thi move will not result in the king being attacked, if so return ture
+                // check if this move will not result in the king being attacked, if so return ture
                 return true;
             }
 
@@ -47,9 +47,8 @@ namespace ConsoleChess
         {
             if (this.isCastlingDone())
             {
-                return this.castlingDone;
+                return false;
             }
-
             // Logic for returning true or false
             return false;
         }

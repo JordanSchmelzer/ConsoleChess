@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleChess
 {
-    public enum GameStatus
+    public enum EnumGameStatus
     {
         ACTIVE,
         BLACK_WIN,

@@ -10,29 +10,46 @@ namespace ConsoleChess
     {
         public int GameRow;
         public int GameCol;
-        private GamePiece piece;
+        private IGamePiece piece;
 
-        public BoardSquare(int x,
-                           int y,
-                           GamePiece piece)
+        public BoardSquare(int gameCol,
+                           int gameRow,
+                           IGamePiece piece)
         {
-            this.GameRow = 0;
-            this.GameCol = 0;
-            this.piece = piece;
+            this.setGameRow(gameRow);
+            this.setGameCol(gameCol);
+            this.setPiece(piece);
         }
 
-        public GamePiece getPiece() { return this.piece; }
-        public void setPiece(GamePiece piece) {  this.piece = piece; }
+        public IGamePiece getPiece() 
+        { 
+            return this.piece; 
+        }
+
+        public void setPiece(IGamePiece piece) 
+        {
+            this.piece = piece; 
+        }
+
         public int getGameCol()
         {
             return this.GameCol;
         }
-        public void setGameCol(int xPos) { this.GameCol = xPos; }
+
+        public void setGameCol(int xPos) 
+        { 
+            this.GameCol = xPos; 
+        }
+
         public int getGameRow() 
         {
             return this.GameRow;
         }
-        public void setGameRow(int yPos) { this.GameRow = yPos; }
+
+        public void setGameRow(int yPos) 
+        { 
+            this.GameRow = yPos;
+        }
     }
     public class BoardSquareTypes 
     {

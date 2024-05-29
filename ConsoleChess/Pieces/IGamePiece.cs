@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 
 namespace ConsoleChess
 {
-    public abstract class GamePiece
+    public abstract class IGamePiece
     {
         private bool killed = false;
         private bool white = false;
 
-        public GamePiece(bool white)
+        public IGamePiece(bool white)
         {
             this.setWhite(white);
+
         }
 
         public bool isWhite()
@@ -36,8 +37,11 @@ namespace ConsoleChess
             this.killed = killed;
         }
 
-        //public abstract Boolean canMove(World world, BoardSquare start, BoardSquare end);
+        public abstract bool canMove(World world,
+                                     BoardSquare start,
+                                     BoardSquare end);
     }
+
     public static class PieceTypes
     {
         public static readonly PieceType WhitePawn;
