@@ -10,7 +10,7 @@ namespace ConsoleChess
     {
         public int GameRow;
         public int GameCol;
-        private IGamePiece piece;
+        public IGamePiece piece;
 
         public BoardSquare(int gameCol,
                            int gameRow,
@@ -20,6 +20,9 @@ namespace ConsoleChess
             this.setGameCol(gameCol);
             this.setPiece(piece);
         }
+
+
+
 
         public IGamePiece getPiece() 
         { 

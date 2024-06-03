@@ -23,5 +23,9 @@ namespace ConsoleChess.Pieces
             }
             return false;
         }
+        public override void Move()
+        {
+            Console.Write("");
+        }
     }
 }

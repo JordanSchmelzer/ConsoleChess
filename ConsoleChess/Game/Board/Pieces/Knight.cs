@@ -29,5 +29,10 @@ namespace ConsoleChess.Pieces
             int y = Math.Abs(start.getGameRow() - end.getGameRow());
             return x * y == 2;
         }
+
+        public override void Move()
+        {
+            Console.Write("");
+        }
     }
 }

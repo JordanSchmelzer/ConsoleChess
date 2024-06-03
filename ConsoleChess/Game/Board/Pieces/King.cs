@@ -36,6 +36,11 @@ namespace ConsoleChess
             return this.isValidCastling(world, start, end);
         }
 
+        public override void Move()
+        {
+            Console.Write("");
+        }
+
         public bool isCastlingDone()
         {
             return this.castlingDone = true;

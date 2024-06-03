@@ -19,24 +19,23 @@ namespace ConsoleChess
         {
             return this.humanPlayer;
         }
+    }
 
-        public class HumanPlayer : Player
+    public class HumanPlayer : Player
+    {
+        public HumanPlayer(bool whiteSide)
         {
-            public HumanPlayer(bool whiteSide)
-            {
-                this.whiteSide = whiteSide;
-                this.humanPlayer = true;
-            }
+            this.whiteSide = whiteSide;
+            this.humanPlayer = true;
         }
+    }
 
-        public class ComputerPlayer : Player
+    public class ComputerPlayer : Player
+    {
+        public ComputerPlayer(bool whiteSide)
         {
-            public ComputerPlayer(bool whiteSide)
-            {
-                this.whiteSide = whiteSide;
-                this.humanPlayer = false;
-            }
+            this.whiteSide = whiteSide;
+            this.humanPlayer = false;
         }
-
     }
 }

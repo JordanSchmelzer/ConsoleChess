@@ -32,5 +32,17 @@ namespace ConsoleChess
         {
             this.castlingMove = castlingMove;
         }
+
+        public BoardSquare getStart()
+        {
+            return this.start;
+        }
+
+        public BoardSquare getEnd()
+        {
+            return this.end;
+        }
+
+
     }
 }

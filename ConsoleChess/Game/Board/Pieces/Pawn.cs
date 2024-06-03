@@ -6,16 +6,23 @@ using System.Threading.Tasks;
 
 namespace ConsoleChess.Pieces
 {
-    internal class Rook: IGamePiece
+    internal class Pawn: IGamePiece
     {
-        public Rook(bool white) : base(white)
+        public Pawn(bool white) : base(white)
         {
 
         }
         override
         public bool canMove(World world, BoardSquare start, BoardSquare end)
         {
+            // logic to determinei if this thing can move or not
+            
+
             return true;
+        }
+
+        public override void Move()
+        {
         }
     }
 }

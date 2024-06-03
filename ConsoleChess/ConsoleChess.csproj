@@ -43,22 +43,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Board\BoardSquare.cs" />
+    <Compile Include="Game\Board\BoardSquare.cs" />
+    <Compile Include="Frame\Frame.cs" />
     <Compile Include="Game\Game.cs" />
-    <Compile Include="Pieces\Bishop.cs" />
-    <Compile Include="Pieces\IGamePiece.cs" />
+    <Compile Include="Game\Board\Pieces\Bishop.cs" />
+    <Compile Include="Game\Board\Pieces\IGamePiece.cs" />
     <Compile Include="Game\EnumGameStatus.cs" />
-    <Compile Include="Pieces\King.cs" />
+    <Compile Include="Game\Board\Pieces\King.cs" />
     <Compile Include="Game\Move.cs" />
     <Compile Include="Game\Player.cs" />
-    <Compile Include="Pieces\Knight.cs" />
-    <Compile Include="Pieces\Pawn.cs" />
-    <Compile Include="Pieces\Queen.cs" />
-    <Compile Include="Pieces\Rook.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Game\Board\Pieces\Knight.cs" />
+    <Compile Include="Game\Board\Pieces\Pawn.cs" />
+    <Compile Include="Game\Board\Pieces\Queen.cs" />
+    <Compile Include="Game\Board\Pieces\Rook.cs" />
+    <Compile Include="Game\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Board\Tile.cs" />
-    <Compile Include="Board\World.cs" />
+    <Compile Include="Game\Board\Tile.cs" />
+    <Compile Include="Game\Board\World.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

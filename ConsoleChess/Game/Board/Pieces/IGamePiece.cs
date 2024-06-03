@@ -40,6 +40,8 @@ namespace ConsoleChess
         public abstract bool canMove(World world,
                                      BoardSquare start,
                                      BoardSquare end);
+
+        public abstract void Move();
     }
 
     public static class PieceTypes

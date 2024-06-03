@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ConsoleChess.Pieces
 {
-    internal class Pawn: IGamePiece
+    internal class Rook: IGamePiece
     {
-        public Pawn(bool white) : base(white)
+        public Rook(bool white) : base(white)
         {
 
         }
@@ -16,6 +16,10 @@ namespace ConsoleChess.Pieces
         public bool canMove(World world, BoardSquare start, BoardSquare end)
         {
             return true;
+        }
+        public override void Move()
+        {
+            Console.Write("");
         }
     }
 }
