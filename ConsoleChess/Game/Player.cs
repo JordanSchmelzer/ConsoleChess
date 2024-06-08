@@ -20,7 +20,6 @@ namespace ConsoleChess
             return this.humanPlayer;
         }
     }
-
     public class HumanPlayer : Player
     {
         public HumanPlayer(bool whiteSide)
@@ -29,7 +28,6 @@ namespace ConsoleChess
             this.humanPlayer = true;
         }
     }
-
     public class ComputerPlayer : Player
     {
         public ComputerPlayer(bool whiteSide)

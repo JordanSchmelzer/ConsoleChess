@@ -9,22 +9,22 @@ namespace ConsoleChess
     public class Game
     {
         private Player[] players = new Player[2];
-        private World world;
+        public GameBoard gameBaord;
         public Player currentTurn;
         private EnumGameStatus gameStatus;
         private List<Move> movesPlayed = new List<Move>();
+        public static HumanPlayer p1 = new HumanPlayer(true);
+        public static HumanPlayer p2 = new HumanPlayer(false);
 
-        public Game(World world)
+        public Game(GameBoard gameBoard)
         {
-            this.world = world;
+            this.gameBaord = gameBoard;
         }
 
-        public void initialize(Player p1, Player p2)
+        public void Initialize(Player p1, Player p2)
         {
             players[0] = p1;
             players[1] = p2;
-
-            //world.resetBoard();
 
             if (p1.isWhiteSide())
             {
@@ -36,20 +36,49 @@ namespace ConsoleChess
             }
             movesPlayed.Clear();
         }
-
         public bool isEnd()
         {
             return this.getStatus() != EnumGameStatus.ACTIVE;
         }
-
         public EnumGameStatus getStatus()
         {
             return this.gameStatus;
         }
-
-        public void setStatus(EnumGameStatus status)
+        public void SetStatus(EnumGameStatus status)
         {
             this.gameStatus = status;
+        }
+
+        public void MoveGamePieces(string userInput)
+        {
+            try
+            {
+                int startX;
+                int startY;
+                int endX;
+                int endY;
+
+                string userInputStartY = Convert.ToString(userInput[0]);
+                string userInputStartX = Convert.ToString(userInput[1]);
+                string userInputEndY = Convert.ToString(userInput[3]);
+                string userInputEndX = Convert.ToString(userInput[4]);
+
+                startX = 8 - DecodeMoveCommand(userInputStartX);
+                startY = DecodeMoveCommand(userInputStartY) - 1;
+                endX = 8 - DecodeMoveCommand(userInputEndX);
+                endY = DecodeMoveCommand(userInputEndY) - 1;
+
+                if (playerMove(currentTurn, startX, startY, endX, endY))
+                {
+                    //UpdateTiles();
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"Invalid Move! {userInput} is not valid.");
+                }
+            }
+            catch { }
         }
 
         public bool playerMove(Player player,
@@ -58,21 +87,20 @@ namespace ConsoleChess
                                int endX,
                                int endY)
         {
-            BoardSquare startBox = world.getBox(startX, startY);
-            BoardSquare endBox = world.getBox(endX, endY);
-            Move move = new Move(player, startBox, endBox);
-            return this.makeMove(move, player);
+            BoardSquare startBox = gameBaord.GetBoardSquare(startX, startY);
+            BoardSquare endBox = gameBaord.GetBoardSquare(endX, endY);
+
+            Move move = new Move(player, startBox, endBox, gameBaord);
+            return this.MakeMove(move, player);
         }
 
-        private bool makeMove(Move move, Player player)
+        private bool MakeMove(Move move, Player player)
         {
-            //move.getEnd().setPiece(move.getStart().getPiece());
-            //world.boxes[endX, endY].setPiece(move.getStart().getPiece());
-            //move.getStart().setPiece(null);
-
             IGamePiece sourcePiece = move.getStart().getPiece();
+
             if (sourcePiece == null)
             {
+                Console.WriteLine("Invalid Move, try again!");
                 return false;
             }
 
@@ -85,62 +113,48 @@ namespace ConsoleChess
 
             if (sourcePiece.isWhite() != player.isWhiteSide())
             {
-                Console.WriteLine("Error, you tried to move a piece that wasnt yours.\n Move syntax is {startRow},{etartColumn}>{endRow},{endColumn}");
+                Console.WriteLine("Invalid Move, you tried to move a piece that wasnt yours.");
                 return false;
             }
 
-            // valid move? 
-            if (!sourcePiece.canMove(this.world,
-                                     move.getStart(),
-                                     move.getEnd()))
+            // valid move for piece? 
+            if (!sourcePiece.canMove(move, gameBaord))
             {
                 return false;
             }
 
-            // kill? 
-            //IGamePiece destPiece = move.getStart().getPiece();
-            //if (destPiece != null)
-            //{
-            //    destPiece.setKilled(true);
-            //    move.setPieceKilled(destPiece);
-            //}
-
-            // castling? 
-            //if (sourcePiece != null 
-            //    && sourcePiece.isCastlingMove()) 
-            //{
-            //    move.setCastlingMove(true);
-            //}
-
-            // store the move 
-            //movesPlayed.add(move);
-
-            // move piece from the stat box to end box 
-            move.getEnd().setPiece(move.getStart().getPiece());
+            // Make the move
+            move.getEnd().setPiece(sourcePiece);
             move.getStart().setPiece(null);
 
-            //if (destPiece != null && destPiece instanceof King) {
-            //    if (player.isWhiteSide())
-            //    {
-            //        this.setStatus(GameStatus.WHITE_WIN);
-            //    }
-            //    else
-            //    {
-            //        this.setStatus(GameStatus.BLACK_WIN);
-            //    }
-            //}
-
             // set the current turn to the other player 
-            if (this.currentTurn == players[0])
+            if (this.currentTurn == players[0]){this.currentTurn = players[1];}
+            else{this.currentTurn = players[0];}
+           
+            return true;
+        }
+
+        public int DecodeMoveCommand(string inputString)
+        {
+            if (int.TryParse(inputString, out int parsedValue))
             {
-                this.currentTurn = players[1];
+                return parsedValue;
             }
             else
             {
-                this.currentTurn = players[0];
+                switch (inputString)
+                {
+                    case "a": return 1;
+                    case "b": return 2;
+                    case "c": return 3;
+                    case "d": return 4;
+                    case "e": return 5;
+                    case "f": return 6;
+                    case "g": return 7;
+                    case "h": return 8;
+                    default: return 99;
+                }
             }
-
-            return true;
         }
     }
 }

@@ -14,18 +14,19 @@ namespace ConsoleChess.Pieces
 
         }
         override
-        public bool canMove(World world, BoardSquare start, BoardSquare end)
+        public bool canMove(Move move, GameBoard gameBaord)
         {
-            // we can't move this piece to a spot that has a piece of the same color
-            if (end.getPiece().isWhite() == this.isWhite())
+            // Does the target square have a piece of the same color as the moving piece? 
+            if (move.getStart().getPiece().isWhite() == move.player.isWhiteSide())
             {
                 return false;
             }
             return false;
         }
-        public override void Move()
+
+        public override bool isCastlingMove(BoardSquare start, BoardSquare end, GameBoard g)
         {
-            Console.Write("");
+            return false;
         }
     }
 }

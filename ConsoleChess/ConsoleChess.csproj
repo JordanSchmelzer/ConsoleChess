@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CenterIslandScene.cs" />
     <Compile Include="Game\Board\BoardSquare.cs" />
     <Compile Include="Frame\Frame.cs" />
     <Compile Include="Game\Game.cs" />
@@ -50,7 +51,9 @@
     <Compile Include="Game\Board\Pieces\IGamePiece.cs" />
     <Compile Include="Game\EnumGameStatus.cs" />
     <Compile Include="Game\Board\Pieces\King.cs" />
-    <Compile Include="Game\Move.cs" />
+    <Compile Include="Game\Moves\Castle.cs" />
+    <Compile Include="Game\Moves\EnumMoveDirections.cs" />
+    <Compile Include="Game\Moves\Move.cs" />
     <Compile Include="Game\Player.cs" />
     <Compile Include="Game\Board\Pieces\Knight.cs" />
     <Compile Include="Game\Board\Pieces\Pawn.cs" />
@@ -59,7 +62,8 @@
     <Compile Include="Game\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Game\Board\Tile.cs" />
-    <Compile Include="Game\Board\World.cs" />
+    <Compile Include="Game\Board\GameBoard.cs" />
+    <Compile Include="TitleScreen.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

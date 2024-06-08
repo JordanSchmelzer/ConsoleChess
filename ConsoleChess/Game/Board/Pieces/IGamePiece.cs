@@ -10,6 +10,7 @@ namespace ConsoleChess
     {
         private bool killed = false;
         private bool white = false;
+        private bool hasMoved = false;
 
         public IGamePiece(bool white)
         {
@@ -31,17 +32,24 @@ namespace ConsoleChess
         {
             return this.killed;
         }
-
         public void setKilled(bool killed)
         {
             this.killed = killed;
         }
 
-        public abstract bool canMove(World world,
-                                     BoardSquare start,
-                                     BoardSquare end);
+        public abstract bool canMove(Move move, GameBoard gameBaord);
 
-        public abstract void Move();
+        public void SetMoved()
+        {
+            this.hasMoved = true;
+        }
+        public bool HasMoved()
+        {
+            return this.hasMoved;
+        }
+
+
+        public abstract bool isCastlingMove(BoardSquare start, BoardSquare end, GameBoard board);
     }
 
     public static class PieceTypes
