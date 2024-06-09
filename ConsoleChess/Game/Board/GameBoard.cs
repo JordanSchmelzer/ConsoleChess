@@ -78,6 +78,7 @@ namespace ConsoleChess
                 }
             }
         }
+
         public void UpdateFrame()
         {
             DrawChessBoardSquares();

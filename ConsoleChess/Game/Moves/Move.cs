@@ -79,8 +79,8 @@ namespace ConsoleChess
 
         public int deltaRow()
         {
-            int rowStart = start.GameRow;
-            int rowEnd = end.GameRow;
+            int rowStart = start.GameCol;
+            int rowEnd = end.GameCol;
             return rowEnd - rowStart;
         }
         public int deltaCol()

@@ -43,10 +43,15 @@ namespace ConsoleChess
                 if (userInput == "pass") { ; }
                 if (userInput == "undo") { ; }
                 if (userInput == "ff") { game.SetStatus(EnumGameStatus.FOREFIT); }
-                if (userInput.Contains(">")) 
+                if (userInput.Contains(" ")) 
                 { 
-                    game.MoveGamePieces(userInput); 
+                    game.MoveGamePieces(userInput);
+
+                    Console.WriteLine("Confirm?");
+                    Console.ReadLine();
+
                     game.gameBaord.UpdateFrame();
+
                     frame.Render(); 
                 }
             }

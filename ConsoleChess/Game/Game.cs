@@ -78,7 +78,10 @@ namespace ConsoleChess
                     Console.WriteLine($"Invalid Move! {userInput} is not valid.");
                 }
             }
-            catch { }
+            catch(Exception e)
+            {
+                Console.WriteLine($"Error: {e}");
+            }
         }
 
         public bool playerMove(Player player,
@@ -124,12 +127,19 @@ namespace ConsoleChess
             }
 
             // Make the move
+            Console.WriteLine("Move accepted");
             move.getEnd().setPiece(sourcePiece);
             move.getStart().setPiece(null);
 
             // set the current turn to the other player 
-            if (this.currentTurn == players[0]){this.currentTurn = players[1];}
-            else{this.currentTurn = players[0];}
+            if (this.currentTurn == players[0])
+            {
+                this.currentTurn = players[1];
+            }
+            else
+            {
+                this.currentTurn = players[0];
+            }
            
             return true;
         }
