@@ -11,6 +11,7 @@ namespace ConsoleChess
         private bool killed = false;
         private bool white = false;
         private bool hasMoved = false;
+        private bool isPreview = false;
 
         public IGamePiece(bool white)
         {
@@ -22,7 +23,6 @@ namespace ConsoleChess
         {
             return this.white;
         } 
-
         public void setWhite(bool white) 
         {
             this.white = white;
@@ -48,6 +48,14 @@ namespace ConsoleChess
             return this.hasMoved;
         }
 
+        public bool getPreview()
+        {
+            return this.isPreview;
+        }
+        public void setPreview(bool isPreview)
+        {
+            this.isPreview = isPreview;
+        }
 
         public abstract bool isCastlingMove(BoardSquare start, BoardSquare end, GameBoard board);
     }

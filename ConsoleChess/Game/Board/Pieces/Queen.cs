@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleChess.Pieces
 {
-    internal class Queen: IGamePiece
+    public class Queen: IGamePiece
     {
         public Queen(bool white) : base(white)
         {

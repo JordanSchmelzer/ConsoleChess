@@ -149,7 +149,6 @@ namespace ConsoleChess
             return false;
         }
 
-
         public bool isCastlingDone()
         {
             return this.castlingDone = true;

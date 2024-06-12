@@ -44,8 +44,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CenterIslandScene.cs" />
+    <Compile Include="Frame\GameMenu.cs" />
+    <Compile Include="Frame\Menu.cs" />
+    <Compile Include="Frame\UserInputMenu.cs" />
     <Compile Include="Game\Board\BoardSquare.cs" />
-    <Compile Include="Frame\Frame.cs" />
+    <Compile Include="Frame\GameRenderer.cs" />
     <Compile Include="Game\Game.cs" />
     <Compile Include="Game\Board\Pieces\Bishop.cs" />
     <Compile Include="Game\Board\Pieces\IGamePiece.cs" />

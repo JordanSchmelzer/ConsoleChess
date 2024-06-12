@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ConsoleChess
+﻿namespace ConsoleChess
 {
     public class BoardSquare
     {
         public int GameRow;
         public int GameCol;
         public IGamePiece piece;
+        public bool isPreview = false;
 
         public BoardSquare(int gameCol,
                            int gameRow,
@@ -21,14 +16,19 @@ namespace ConsoleChess
             this.setPiece(piece);
         }
 
-
-
+        public void setPreview(bool preview)
+        {
+            this.isPreview = preview;
+        }
+        public bool getPreview()
+        {
+            return this.isPreview;
+        }
 
         public IGamePiece getPiece() 
         { 
             return this.piece; 
         }
-
         public void setPiece(IGamePiece piece) 
         {
             this.piece = piece; 
@@ -38,7 +38,6 @@ namespace ConsoleChess
         {
             return this.GameCol;
         }
-
         public void setGameCol(int xPos) 
         { 
             this.GameCol = xPos; 
@@ -48,7 +47,6 @@ namespace ConsoleChess
         {
             return this.GameRow;
         }
-
         public void setGameRow(int yPos) 
         { 
             this.GameRow = yPos;
@@ -90,11 +88,6 @@ namespace ConsoleChess
             this.Name = name;
             this.GameRow = gameRow;
             this.GameCol = gameCol;
-        }
-
-        public void Move(int targetRow, int targetCol)
-        {
-
         }
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.CompilerServices;
 
 namespace ConsoleChess
 {
@@ -24,6 +20,28 @@ namespace ConsoleChess
             this.pieceMoved = start.getPiece();
             this.direction = this.SetDirection();
         }
+        public void SetPreviewSquare(bool isPreview)
+        {
+            this.end.setPreview(isPreview);
+        }
+
+        public void Execute()
+        {
+            this.end.setPiece(this.start.getPiece());
+            this.start.setPiece(null);
+        }
+
+        public void PreviewMove()
+        {
+            this.getEnd().setPreview(true);
+            this.getStart().setPreview(true);
+        }
+        public void ResetPreview()
+        {
+            this.getEnd().setPreview(false);
+            this.getStart().setPreview(false);
+        }
+
         public EnumMoveDirections SetDirection()
         {
             int startRow = start.GameCol;
@@ -90,42 +108,10 @@ namespace ConsoleChess
             return colEnd - colStart;
         }
 
-       // public bool isCastlingMove(BoardSquare start, BoardSquare end)
         public bool isCastlingMove()
         {
-            //// Is piece a king? 
-            //if (start.getPiece() is King)
-            //{
-            //    // It is the same color as the player
-            //    if (start.piece.isWhite())
-            //    {
-            //        // Is the king in the starting position?
-            //        if(start.GameCol == 1 && start.GameRow == 5)
-            //        {
-            //            // Is the rook the King moves to in the original position?
-            //            if ()
-            //            {
-            //                this.castlingMove = true;
-            //                return this.castlingMove;
-            //            }
-            //        }
-            //    }
-            //    else
-            //    {
-            //        if(start.GameCol == 8 && start.GameRow == 5)
-            //        {
-            //            this.castlingMove = true;
-            //            return this.castlingMove;
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    return this.castlingMove;
-            //}
             return true;
         }
-
         public void setCastlingMove(bool castlingMove)
         {
             this.castlingMove = castlingMove;
@@ -135,12 +121,9 @@ namespace ConsoleChess
         {
             return this.start;
         }
-
         public BoardSquare getEnd()
         {
             return this.end;
         }
-
-
     }
 }

@@ -34,6 +34,7 @@ namespace ConsoleChess
         public static readonly TileType DarkGreen;
         public static readonly TileType Black;
         public static readonly TileType DarkGrey;
+        public static readonly TileType Cyan;
 
         // Row 1
         public static readonly TileType OneOne;
@@ -123,6 +124,7 @@ namespace ConsoleChess
             White = new TileType("White", ConsoleColor.White, ConsoleColor.Gray, "  ", 100);
             DarkGreen = new TileType("DarkGreen", ConsoleColor.DarkGreen, ConsoleColor.Green, "  ", 100);
             Black = new TileType("Black", ConsoleColor.Black, ConsoleColor.Black, "  ", 100);
+            Cyan = new TileType("BrightCyan", ConsoleColor.Cyan, ConsoleColor.Cyan, "  ", 100);
 
             // Coordinate Special Squares
             // Row 1
