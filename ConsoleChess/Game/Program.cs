@@ -11,8 +11,6 @@ namespace ConsoleChess
 {
     internal class Program
     {
-
-
         public static void Main(string[] args)
         {
             Console.Title = "Console Chess v0.1";
@@ -201,7 +199,7 @@ c$$$cc$$$c  $$""""""""Y$$$$$,     $$$$$      $$$     $$
         static void ExitProgram()
         {
             // TODO: End Multiplayer sessions
-            Console.WriteLine("\nPress any key to exit...");
+            Console.WriteLine("\n Thanks for playing! Press any key to exit...");
             Console.ReadKey(true);
             Environment.Exit(0);
         }

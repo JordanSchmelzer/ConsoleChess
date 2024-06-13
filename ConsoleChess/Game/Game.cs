@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static System.Console;
 
 namespace ConsoleChess
 {
@@ -27,49 +24,125 @@ namespace ConsoleChess
         public EnumGameStatus Run()
         {
             Initialize(p1,p2);
-
+            string gameMessage = "";
             do
             {
                 gameRenderer.Render(gameBoard);
 
-                Console.ForegroundColor = ConsoleColor.White;
+                ForegroundColor = ConsoleColor.Cyan;
                 if (currentTurn.whiteSide)
                 {
-                    Console.WriteLine("It's White's turn to move!");
+                    WriteLine("[Turn] It's White's turn to move!");
                 }
                 else 
                 {
-                    Console.WriteLine("It's Black's turn to move!");
+                    WriteLine("[Turn] It's Black's turn to move!");
                 }
-                Console.WriteLine("Move Syntax: <Start Coordinates><SPACE><End Coordinates> [ex: b2 b4]");
-                Console.WriteLine("Enter Move: ");
-                string userInput = Console.ReadLine();
+                ForegroundColor = ConsoleColor.White;
+                WriteLine($"[Game Message]: {gameMessage}");
+                ForegroundColor = ConsoleColor.Gray;
+                WriteLine("[Move Syntax ] <Start Coordinates><SPACE><End Coordinates> [ex: b2 b4]");
+                ForegroundColor= ConsoleColor.Green;
+                WriteLine("Enter Move:");
 
-                // To do write a private bool to check if user input is valid
-                //if()
-                //{
+                string userInput = ReadLine();
 
-                //}
+                switch (ParseUserInputCommand(userInput.Trim()))
+                {
+                    case EnumUserCommandType.MOVE:
+                        if (PlayerMove(userInput))
+                        {
+                            gameMessage = $"Move accepted: {userInput}";
+                            SwitchActivePlayer();
+                        }
+                        break;
 
-                PlayerMove(currentTurn);
-                SwitchActivePlayer();
+                    case EnumUserCommandType.INVALID:
+                        gameMessage = "Input not recognized as command.";
+                        break;
+
+                }
             } while (this.gameStatus == EnumGameStatus.ACTIVE);
 
             return 0;
         }
-
-        public void PlayerMove(Player player)
+        private EnumUserCommandType ParseUserInputCommand(string userInput)
         {
-            Console.WriteLine();
-
-            BoardSquare startBox = gameBoard.GetBoardSquare(0, 0);
-            BoardSquare endBox = gameBoard.GetBoardSquare(1, 0);
-
-            Move move = new Move(player, startBox, endBox, gameBoard);
-            //return this.MakeMove(move, player);
+            if (
+                (userInput.Length == 5) &&
+                (Char.IsLetter(userInput[0])) &&
+                (Char.IsNumber(userInput[1])) &&
+                (userInput[2] == ' ' ) &&
+                (Char.IsLetter(userInput[3])) &&
+                (Char.IsNumber(userInput[4]))
+                )
+            {
+                return EnumUserCommandType.MOVE;
+            }
+            if (userInput == "quit")
+            {
+                this.SetStatus(EnumGameStatus.FOREFIT);
+            }
+            return EnumUserCommandType.INVALID;
         }
+        public bool PlayerMove(string playerInput)
+        {
+            WriteLine($"Log! Move {playerInput}");
 
+            // Janky but it'll do!
+            string userInputStartY = Convert.ToString(playerInput[0]);
+            string userInputStartX = Convert.ToString(playerInput[1]);
+            string userInputEndY = Convert.ToString(playerInput[3]);
+            string userInputEndX = Convert.ToString(playerInput[4]);
 
+            int startX = 8 - DecodeMoveCommand(userInputStartX);
+            int startY = DecodeMoveCommand(userInputStartY) - 1;
+            int endX = 8 - DecodeMoveCommand(userInputEndX);
+            int endY = DecodeMoveCommand(userInputEndY) - 1;
+
+            BoardSquare startBox = gameBoard.GetBoardSquare(startX, startY);
+            BoardSquare endBox = gameBoard.GetBoardSquare(endX, endY);
+
+            Move move = new Move(currentTurn, startBox, endBox, gameBoard);
+
+            if (move.getStart().getPiece() == null)
+            {
+                return false;
+            }
+
+            if (move.getStart().getPiece().canMove(move))
+            {
+                move.PreviewMove();
+                gameRenderer.Render(gameBoard);
+
+                ForegroundColor = ConsoleColor.Green;
+                WriteLine("Keep Move? (Press 'n' to undo or any key to keep)");
+
+                ConsoleKey keyPressed;
+                ConsoleKeyInfo keyInfo = ReadKey(true);
+                keyPressed = keyInfo.Key;
+
+                if (keyPressed == ConsoleKey.N)
+                {
+                    move.Undo();
+                    gameRenderer.Render(gameBoard);
+                    ForegroundColor= ConsoleColor.Green;
+                    WriteLine("Move undone! Press any key to continue...");
+                    ReadKey(true);
+                    return false;
+                }
+                // Leave the move rendered on the board
+                move.ResetPreview();
+
+                return true;
+            }
+            else
+            {
+                WriteLine($"Invalid move! {playerInput}");
+                ReadLine();
+                return false;
+            }
+        }
         private void Initialize(Player p1, Player p2)
         {
             this.gameStatus = EnumGameStatus.ACTIVE;
@@ -100,90 +173,6 @@ namespace ConsoleChess
         {
             this.gameStatus = status;
         }
-
-        //public bool MoveGamePieces(string userInput)
-        //{
-        //    try
-        //    {
-        //        string userInputStartY = Convert.ToString(userInput[0]);
-        //        string userInputStartX = Convert.ToString(userInput[1]);
-        //        string userInputEndY = Convert.ToString(userInput[3]);
-        //        string userInputEndX = Convert.ToString(userInput[4]);
-
-        //        int startX = 8 - DecodeMoveCommand(userInputStartX);
-        //        int startY = DecodeMoveCommand(userInputStartY) - 1;
-        //        int endX = 8 - DecodeMoveCommand(userInputEndX);
-        //        int endY = DecodeMoveCommand(userInputEndY) - 1;
-
-        //        if (PlayerMove(currentTurn, startX, startY, endX, endY))
-        //        {
-        //            // TODO fix this, wasteful. Fix chain of bools goign on here
-        //            BoardSquare startBox = gameBoard.GetBoardSquare(startX, startY);
-        //            BoardSquare endBox = gameBoard.GetBoardSquare(endX, endY);
-
-        //            Move move = new Move(currentTurn, startBox, endBox, gameBoard);
-
-        //            move.PreviewMove(); // Set the boardsquare to preview mode
-
-        //            //this.gameBaord.frame.Render();
-
-        //            Console.ForegroundColor = ConsoleColor.White;
-        //            Console.WriteLine("Confirm Move?");
-        //            Console.ReadLine();
-
-        //            move.Execute();
-        //            move.ResetPreview(); // Set the boardsquare preview mode to false
-
-        //            //this.gameBaord.frame.Render();
-
-        //            return true;
-        //        }
-        //        else
-        //        {
-        //            Console.ForegroundColor = ConsoleColor.Red;
-        //            Console.WriteLine($"Invalid Move! {userInput} is not valid.");
-        //            return false;
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine($"Error: {e}");
-        //    }
-        //    return false;
-        //}
-
-
-        private bool MakeMove(Move move, Player player)
-        {
-            IGamePiece sourcePiece = move.getStart().getPiece();
-
-            // Disallow these actions
-            if (sourcePiece == null)
-            {
-                Console.WriteLine("Invalid Move, try again!");
-                return false;
-            }
-            if (player != currentTurn)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("It's not your turn to move a piece");
-                return false;
-            }
-            if (sourcePiece.isWhite() != player.isWhiteSide())
-            {
-                Console.WriteLine("Invalid Move, you tried to move a piece that wasnt yours.");
-                return false;
-            }
-
-            // Check Piece Type Move Specifics
-            if (!sourcePiece.canMove(move, gameBoard))
-            {
-                return false;
-            }
-
-            return true;
-        }
-
         private void SwitchActivePlayer()
         {
             if (this.currentTurn == players[0])

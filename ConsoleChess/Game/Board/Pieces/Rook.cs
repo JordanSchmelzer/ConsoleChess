@@ -15,7 +15,7 @@ namespace ConsoleChess.Pieces
 
         }
         override
-        public bool canMove(Move move, GameBoard gameBoard)
+        public bool canMove(Move move)
         {
             // Does the target square have a piece of the same color as the moving piece? 
             if (move.getEnd().getPiece() != null)
@@ -75,7 +75,7 @@ namespace ConsoleChess.Pieces
                 for (int i = 0; i < move.deltaRow(); i++)
                 {
                     BoardSquare nextDiagonalBoardSquare = 
-                        gameBoard.boardSquare[startRow + rowIterator,
+                        move.gameBoard.boardSquare[startRow + rowIterator,
                                                 startCol + colIterator];
                     if (nextDiagonalBoardSquare.getPiece() != null)
                     {
@@ -102,7 +102,7 @@ namespace ConsoleChess.Pieces
             return false;
         }
 
-        public override bool isCastlingMove(BoardSquare start, BoardSquare end, GameBoard g)
+        public override bool isCastlingMove(Move move)
         {
             return false;
         }

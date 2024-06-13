@@ -11,7 +11,7 @@ namespace ConsoleChess.Pieces
         }
 
         override
-        public bool canMove(Move move, GameBoard gameBoard)
+        public bool canMove(Move move)
         {
             // Does the target square have a piece of the same color as the moving piece? 
             if (move.getEnd().getPiece() != null)
@@ -56,7 +56,7 @@ namespace ConsoleChess.Pieces
                     if (move.getStart().getPiece().isWhite())
                     {
                         // check white forward
-                        BoardSquare nextSquareForward = gameBoard.GetBoardSquare(move.getStart().getGameCol() - 1,
+                        BoardSquare nextSquareForward = move.gameBoard.GetBoardSquare(move.getStart().getGameCol() - 1,
                                                                                  move.getStart().getGameRow());
                         if (nextSquareForward.getPiece() == null)
                         {
@@ -66,7 +66,7 @@ namespace ConsoleChess.Pieces
                     else
                     {
                         // check black forward
-                        BoardSquare nextSquareForward = gameBoard.GetBoardSquare(move.getStart().getGameCol() + 1,
+                        BoardSquare nextSquareForward = move.gameBoard.GetBoardSquare(move.getStart().getGameCol() + 1,
                                                                                  move.getStart().getGameRow());
                         if (nextSquareForward.getPiece() == null)
                         {
@@ -109,7 +109,7 @@ namespace ConsoleChess.Pieces
             return false;
         }
 
-        public override bool isCastlingMove(BoardSquare start, BoardSquare end, GameBoard g)
+        public override bool isCastlingMove(Move move)
         {
             return false;
         }

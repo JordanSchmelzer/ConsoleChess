@@ -14,7 +14,7 @@ namespace ConsoleChess.Pieces
 
         }
         override
-        public bool canMove(Move move, GameBoard gameBoard)
+        public bool canMove(Move move)
         {
             // Check if causes check
             // TODO: build this
@@ -74,7 +74,7 @@ namespace ConsoleChess.Pieces
                 for (int i = 0; i < (deltaRow - 1); i++)
                 {
                     BoardSquare nextDiagonalBoardSquare =
-                        gameBoard.boardSquare[startRow + rowIterator,startCol + colIterator];
+                        move.gameBoard.boardSquare[startRow + rowIterator,startCol + colIterator];
                     if (nextDiagonalBoardSquare.getPiece() != null)
                     {
                         return false;
@@ -99,7 +99,7 @@ namespace ConsoleChess.Pieces
             return false;
         }
 
-        public override bool isCastlingMove(BoardSquare start, BoardSquare end, GameBoard g)
+        public override bool isCastlingMove(Move move)
         {
             return false;
         }

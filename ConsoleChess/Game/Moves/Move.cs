@@ -11,6 +11,7 @@ namespace ConsoleChess
         private IGamePiece pieceKilled;
         private bool castlingMove = false;
         public EnumMoveDirections direction;
+        public GameBoard gameBoard; //TODO make private and give access methods
 
         public Move(Player player, BoardSquare start, BoardSquare end, GameBoard board)
         {
@@ -19,6 +20,7 @@ namespace ConsoleChess
             this.end = end;
             this.pieceMoved = start.getPiece();
             this.direction = this.SetDirection();
+            this.gameBoard = board;
         }
         public void SetPreviewSquare(bool isPreview)
         {
@@ -30,16 +32,23 @@ namespace ConsoleChess
             this.end.setPiece(this.start.getPiece());
             this.start.setPiece(null);
         }
-
+        public void Undo()
+        {
+            this.start.setPiece(this.end.getPiece());
+            this.end.setPiece(null);
+            this.ResetPreview();
+        }
         public void PreviewMove()
         {
-            this.getEnd().setPreview(true);
-            this.getStart().setPreview(true);
+            end.setPreview(true);
+            start.setPreview(true);
+            end.setPiece(start.getPiece());
+            start.setPiece(null);
         }
         public void ResetPreview()
         {
-            this.getEnd().setPreview(false);
-            this.getStart().setPreview(false);
+            end.setPreview(false);
+            start.setPreview(false);
         }
 
         public EnumMoveDirections SetDirection()

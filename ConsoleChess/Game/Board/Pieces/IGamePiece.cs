@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ConsoleChess
+﻿namespace ConsoleChess
 {
     public abstract class IGamePiece
     {
@@ -37,7 +31,7 @@ namespace ConsoleChess
             this.killed = killed;
         }
 
-        public abstract bool canMove(Move move, GameBoard gameBaord);
+        public abstract bool canMove(Move move);
 
         public void SetMoved()
         {
@@ -57,7 +51,7 @@ namespace ConsoleChess
             this.isPreview = isPreview;
         }
 
-        public abstract bool isCastlingMove(BoardSquare start, BoardSquare end, GameBoard board);
+        public abstract bool isCastlingMove(Move move);
     }
 
     public static class PieceTypes
@@ -94,6 +88,7 @@ namespace ConsoleChess
             BlackKing = new PieceType("BlackKing", 0, 0);
         }
     }
+
     public class PieceType
     {
         public string Name;

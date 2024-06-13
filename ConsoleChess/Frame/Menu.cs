@@ -96,7 +96,7 @@ namespace ConsoleChess
                 `""--......--""
             Knight by Joan G. Stark
 ";
-            WriteLine("\nw\n\n"+footerDecoration);
+            WriteLine("\n\n\n"+footerDecoration);
 
             ResetColor();
         }
