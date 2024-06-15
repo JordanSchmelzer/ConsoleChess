@@ -6,6 +6,7 @@
         public int GameCol;
         public IGamePiece piece;
         public bool isPreview = false;
+        public bool isError = false;
 
         public BoardSquare(int gameCol,
                            int gameRow,
@@ -14,6 +15,15 @@
             this.setGameRow(gameRow);
             this.setGameCol(gameCol);
             this.setPiece(piece);
+        }
+
+        public void setError(bool error)
+        {
+            this.isError = error;
+        }
+        public bool getError()
+        {
+            return this.isError;
         }
 
         public void setPreview(bool preview)

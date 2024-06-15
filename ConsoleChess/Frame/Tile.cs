@@ -144,7 +144,7 @@ namespace ConsoleChess
             TwoFive = new TileType("OneOne", ConsoleColor.Cyan, ConsoleColor.Black, "e7", 100);
             TwoSix = new TileType("OneOne", ConsoleColor.Cyan, ConsoleColor.Black, "f7", 100);
             TwoSeven = new TileType("OneOne", ConsoleColor.Cyan, ConsoleColor.Black, "g7", 100);
-            TwoEight = new TileType("OneOne", ConsoleColor.Cyan, ConsoleColor.Black, "h8", 100);  
+            TwoEight = new TileType("OneOne", ConsoleColor.Cyan, ConsoleColor.Black, "h7", 100);  
             // Row 3
             ThreeOne = new TileType("OneOne", ConsoleColor.Cyan, ConsoleColor.Black, "a6", 100);
             ThreeTwo = new TileType("OneOne", ConsoleColor.Cyan, ConsoleColor.Black, "b6", 100);

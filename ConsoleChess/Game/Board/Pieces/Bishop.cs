@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleChess.Pieces
 {
@@ -14,21 +10,13 @@ namespace ConsoleChess.Pieces
         override
         public bool canMove(Move move)
         {
-            IGamePiece endPiece = move.getEnd().getPiece();
-            IGamePiece startPiece = move.getStart().getPiece();
             int deltaRow = move.deltaRow();
             int deltaCol = move.deltaCol();
             int absDeltaRow = Math.Abs(deltaRow);
             int absDeltaCol = Math.Abs(deltaCol);
 
             // dont let player take their own piece
-            if (endPiece != null)
-            {
-                if (endPiece.isWhite() == startPiece.isWhite()) 
-                { 
-                    return false;
-                }
-            }
+            if (IsTargetMyOwnPiece(move) == true) { return false; }
 
             //  Diagonal moves are always an equal ratio
             if (absDeltaRow == 0 || absDeltaCol == 0) { return false; }
@@ -40,10 +28,22 @@ namespace ConsoleChess.Pieces
             { 
                 return false;
             }
+            
+            if (IsPathToEndSquareClear(move) == false) { return false; }
+            if (IsValidDiagonalCapture(move)) { return true; }
+            if (IsValidDiagonalMove(move)) { return true; }
+
+            Console.WriteLine("Invalid Move! Reason: Not a recognized valid move.");
+            return false;
+        }
+        private bool IsPathToEndSquareClear(Move move) 
+        {
+            int deltaCol = move.deltaCol();
+            int absDeltaCol = Math.Abs(deltaCol);
 
             // set the vector of motion
-            int rowIterator=0;
-            int colIterator=0;
+            int rowIterator = 0;
+            int colIterator = 0;
 
             if (move.direction == EnumMoveDirections.NORTHEAST)
             {
@@ -65,7 +65,6 @@ namespace ConsoleChess.Pieces
                 rowIterator = -1;
                 colIterator = -1;
             }
-
             // Gameboard layout example:
             // Top Left Black Rook gameboard[0,0]
             // Bottom Right White Rook gameboard[7,7]
@@ -73,7 +72,7 @@ namespace ConsoleChess.Pieces
             // Are there any pieces in the way of this move?
             int startRow = move.getStart().GameCol;
             int startCol = move.getStart().GameRow;
-            for (int i =  1; i < absDeltaCol ; i++)
+            for (int i = 1; i < absDeltaCol; i++)
             {
                 int shiftRow = rowIterator * i;
                 int shiftCol = colIterator * i;
@@ -86,7 +85,7 @@ namespace ConsoleChess.Pieces
                 Console.WriteLine($"Original BoardSquare ({startRow},{startCol}) " +
                     $"-> New BoardSquare ({nextRow},{nextCol})");
 
-                BoardSquare boardSquare = 
+                BoardSquare boardSquare =
                     move.gameBoard.GetBoardSquare(nextRow, nextCol);
                 Console.WriteLine($"gameBoard Row {nextRow}; gameBoard Col {nextCol}; Piece {boardSquare.piece}; IsWhite ");
                 if (boardSquare.getPiece() != null)
@@ -95,22 +94,41 @@ namespace ConsoleChess.Pieces
                 }
             }
 
+            return true; 
+        }
+        private bool IsValidDiagonalCapture(Move move) 
+        {
             // This is a capture move
-            if (endPiece != null)
+            if (move.getEnd().getPiece() != null)
             {
                 Console.WriteLine("Log: Diagonal Capture Accepted");
                 return true;
             }
-            // this is a move
-            if (endPiece == null)
+            return false;
+        }
+        private bool IsValidDiagonalMove(Move move)
+        {
+            if (move.getEnd().getPiece() == null)
             {
                 Console.WriteLine("Log: Diagonal Move Accepted");
                 return true;
             }
-            Console.WriteLine("Invalid Move! Reason: Not a recognized valid move.");
             return false;
         }
+        private bool IsTargetMyOwnPiece(Move move)
+        {
+            IGamePiece endPiece = move.getEnd().getPiece();
+            IGamePiece startPiece = move.getStart().getPiece();
 
+            if (endPiece != null)
+            {
+                if (endPiece.isWhite() == startPiece.isWhite())
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         public override bool isCastlingMove(Move move)
         {
             return false;

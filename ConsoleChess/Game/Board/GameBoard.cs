@@ -10,7 +10,6 @@ namespace ConsoleChess
         public const int BoardSquaresPerRowCol = 8;
         public BoardSquare[,] boardSquare;
 
-
         public GameBoard()
         {
             ResetChessPiecesOnBoard();
