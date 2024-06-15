@@ -16,26 +16,34 @@ namespace ConsoleChess.Pieces
         override
         public bool canMove(Move move)
         {
-            // Does the target square have a piece of the same color as the moving piece? 
-            if (move.getEnd().getPiece() != null)
+            IGamePiece endPiece = move.getEnd().getPiece();
+            IGamePiece startPiece = move.getStart().getPiece();
+            int deltaRow = move.deltaRow();
+            int deltaCol = move.deltaCol();
+            int absDeltaRow = Math.Abs(deltaRow);
+            int absDeltaCol = Math.Abs(deltaCol);
+
+            // dont let player take their own piece
+            if (endPiece != null)
             {
-                if (move.getStart().getPiece().isWhite() ==
-                   (move.getEnd().getPiece().isWhite()))
+                if (endPiece.isWhite() == startPiece.isWhite())
                 {
                     return false;
                 }
             }
 
             // is this an L shaped move?
-            int deltaRow = move.deltaRow();
-            int deltaCol = move.deltaCol();
-            if (
-                !(
-                    ((Math.Abs(deltaRow) == 2 && Math.Abs(deltaCol) == 1)) 
-                    ||
-                    ((Math.Abs(deltaRow) == 1 && Math.Abs(deltaRow) == 2))
-                  )
-               )
+            if (absDeltaRow > 2 || absDeltaCol > 2) 
+            {
+                return false;
+            }
+            if (absDeltaRow < 1 || absDeltaRow < 1)
+            {
+                return false;
+            }
+
+            if ((absDeltaRow == 2 && absDeltaCol != 1) ||
+               ((absDeltaRow) == 1 && absDeltaCol != 2))
             {
                 return false;
             }
@@ -52,7 +60,7 @@ namespace ConsoleChess.Pieces
                 Console.WriteLine("Log: Diagonal Move Accepted");
                 return true;
             }
-
+            Console.WriteLine("Invalid Move! Reason: Not a recognized valid move.");
             return false;
         }
         public override bool isCastlingMove(Move move)

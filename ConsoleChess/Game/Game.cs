@@ -110,6 +110,7 @@ namespace ConsoleChess
                 return false;
             }
 
+            
             if (move.getStart().getPiece().canMove(move))
             {
                 move.PreviewMove();

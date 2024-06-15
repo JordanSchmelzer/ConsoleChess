@@ -17,87 +17,118 @@ namespace ConsoleChess.Pieces
         override
         public bool canMove(Move move)
         {
-            // Does the target square have a piece of the same color as the moving piece? 
-            if (move.getEnd().getPiece() != null)
+            IGamePiece endPiece = move.getEnd().getPiece();
+            IGamePiece startPiece = move.getStart().getPiece();
+            int deltaRow = move.deltaRow();
+            int deltaCol = move.deltaCol();
+            int absDeltaRow = Math.Abs(deltaRow);
+            int absDeltaCol = Math.Abs(deltaCol);
+
+            // dont let player take their own piece
+            if (endPiece != null)
             {
-                if (move.getStart().getPiece().isWhite() ==
-                   (move.getEnd().getPiece().isWhite()))
+                if (endPiece.isWhite() == startPiece.isWhite())
                 {
                     return false;
                 }
             }
 
-            // Check if causes check
-            // TODO: build this
-
-            // enforce move directions
-            if (move.direction == EnumMoveDirections.NORTHEAST ||
-                move.direction ==EnumMoveDirections.SOUTHEAST ||
-                move.direction == EnumMoveDirections.SOUTHWEST ||
-                move.direction == EnumMoveDirections.NORTHWEST)
+            // Only allow North East South West
+            if (move.direction == EnumMoveDirections.NORTHEAST || move.direction ==EnumMoveDirections.SOUTHEAST ||
+                move.direction == EnumMoveDirections.SOUTHWEST || move.direction == EnumMoveDirections.NORTHWEST)
             {
                 return false;
             }
 
-            // check if the ordinal move intersects any pieces
-            int deltaRow = move.deltaRow();
-            int deltaCol = move.deltaCol(); 
-
-            if (Math.Abs(deltaRow) > 1 && Math.Abs(deltaCol) > 1) 
+            // one coordinate vector has to be 0
+            if ((absDeltaRow > 1 && absDeltaCol != 0) ||
+                (deltaRow != 0 && absDeltaCol > 1))
             {
-                int startRow = move.getStart().getGameRow();
-                int startCol = move.getStart().getGameCol();
+                return false;
+            }
 
-                int rowIterator = 0;
-                int colIterator = 0;
+            // set the vector of motion
+            int rowIterator = 0;
+            int colIterator = 0;
 
-                if (move.direction == EnumMoveDirections.NORTH)
-                {
-                    rowIterator = -1;
-                    colIterator = 0;
-                }
-                if (move.direction == EnumMoveDirections.EAST)
-                {
-                    rowIterator = 0;
-                    colIterator = 1;
-                }
-                if (move.direction == EnumMoveDirections.SOUTH)
-                {
-                    rowIterator = 1;
-                    colIterator = 0;
-                }
-                if (move.direction == EnumMoveDirections.WEST)
-                {
-                    rowIterator = 0;
-                    colIterator = -1;
-                }
+            if (move.direction == EnumMoveDirections.NORTH)
+            {
+                rowIterator = -1;
+                colIterator = 0;
+            }
+            if (move.direction == EnumMoveDirections.EAST)
+            {
+                rowIterator = 0;
+                colIterator = 1;
+            }
+            if (move.direction == EnumMoveDirections.SOUTH)
+            {
+                rowIterator = 1;
+                colIterator = 0;
+            }
+            if (move.direction == EnumMoveDirections.WEST)
+            {
+                rowIterator = 0;
+                colIterator = -1;
+            }
 
-                for (int i = 0; i < move.deltaRow(); i++)
+            // Gameboard layout example:
+            // Top Left Black Rook gameboard[0,0]
+            // Bottom Right White Rook gameboard[7,7]
+
+            // Are there any pieces in the way of this move?
+            int startRow = move.getStart().getGameCol();
+            int startCol = move.getStart().getGameRow();
+
+            // ROW
+            for (int i = 1; i < absDeltaRow; i++)
+            {
+                int shiftRow = rowIterator * i;
+                int nextRow = shiftRow + startRow;
+
+                Console.WriteLine($"Move Multiplier: {i}; Shifting row {shiftRow}; shifting column {startCol}");
+
+                BoardSquare adjacentBoardSquare = 
+                    move.gameBoard.boardSquare[nextRow, startCol];
+
+                Console.WriteLine($"gameBoard Row {nextRow}; gameBoard Col {startCol}; Piece {adjacentBoardSquare.piece}; IsWhite ");
+
+                if (adjacentBoardSquare.getPiece() != null)
                 {
-                    BoardSquare nextDiagonalBoardSquare = 
-                        move.gameBoard.boardSquare[startRow + rowIterator,
-                                                startCol + colIterator];
-                    if (nextDiagonalBoardSquare.getPiece() != null)
-                    {
-                        return false;
-                    }
+                    return false;
+                }
+            }
+            // COLUMN
+            for (int i = 1; i < absDeltaCol; i++)
+            {
+                int shiftCol = colIterator * i;
+                int nextCol = shiftCol + startCol;
+
+                Console.WriteLine($"Move Multiplier: {i}; Shifting row {startRow}; shifting column {shiftCol}");
+
+                BoardSquare adjacentBoardSquare = 
+                    move.gameBoard.boardSquare[startRow,nextCol];
+
+                Console.WriteLine($"gameBoard Row {startRow}; gameBoard Col {nextCol}; Piece {adjacentBoardSquare.piece}; IsWhite ");
+
+                if (adjacentBoardSquare.getPiece() != null)
+                {
+                    return false;
                 }
             }
 
             // Check ordinal capture
-            if ((move.getEnd().getPiece() != null))
+            if ((move.getEnd().piece != null))
             {
                 Console.WriteLine("Log: Ordinal Capture Accepted");
                 return true;
             }
-
             // If landing on null square allow this move
-            if (move.getEnd().getPiece() == null) 
+            if (move.getEnd().piece == null) 
             {
                 Console.WriteLine("Log: Ordinal Move Accepted");
                 return true; 
             }
-
             Console.WriteLine("Invalid Move! Reason: Not a recognized valid move.");
             return false;
         }
