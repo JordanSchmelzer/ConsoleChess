@@ -43,7 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CenterIslandScene.cs" />
     <Compile Include="Frame\GameMenu.cs" />
     <Compile Include="Frame\Menu.cs" />
     <Compile Include="Frame\UserInputMenu.cs" />
@@ -63,13 +62,17 @@
     <Compile Include="Game\Board\Pieces\Queen.cs" />
     <Compile Include="Game\Board\Pieces\Rook.cs" />
     <Compile Include="Game\Program.cs" />
+    <Compile Include="Logger\LogAgent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Frame\Tile.cs" />
     <Compile Include="Game\Board\GameBoard.cs" />
-    <Compile Include="TitleScreen.cs" />
+    <Compile Include="Tests\TestCastle.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Tests\UnitTests\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
