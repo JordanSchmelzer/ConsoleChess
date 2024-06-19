@@ -8,13 +8,11 @@ namespace ConsoleChess
         public const int Size = 64;
         public const int PixelsPerBoardSquare = 8;
         public const int BoardSquaresPerRowCol = 8;
-        public BoardSquare[,] boardSquare;
 
-        public GameBoard()
-        {
-            ResetChessPiecesOnBoard();
-        }
+        public BoardSquare[,] boardSquare = 
+            new BoardSquare[BoardSquaresPerRowCol, BoardSquaresPerRowCol];
 
+        public GameBoard() { }
         public BoardSquare GetBoardSquare(int x, int y)
         {
             if (x < 0 || x > 7 || y < 0 || y > 7)
@@ -23,58 +21,64 @@ namespace ConsoleChess
             }
             return boardSquare[x, y];
         }
-        public void ResetChessPiecesOnBoard()
+        public void PlacePiece(int row, int col, IGamePiece piece)
         {
-            // initialize white pieces
-            this.boardSquare = new BoardSquare[8, 8];
-
-            // Setup Black
-            this.boardSquare[0, 0] = new BoardSquare(0, 0, new Rook(false));
-            this.boardSquare[0, 1] = new BoardSquare(0, 1, new Knight(false));
-            this.boardSquare[0, 2] = new BoardSquare(0, 2, new Bishop(false));
-            this.boardSquare[0, 3] = new BoardSquare(0, 3, new Queen(false));
-            this.boardSquare[0, 4] = new BoardSquare(0, 4, new King(false));
-            this.boardSquare[0, 5] = new BoardSquare(0, 5, new Bishop(false));
-            this.boardSquare[0, 6] = new BoardSquare(0, 6, new Knight(false));
-            this.boardSquare[0, 7] = new BoardSquare(0, 7, new Rook(false));
-
-            this.boardSquare[1, 0] = new BoardSquare(1, 0, new Pawn(false));
-            this.boardSquare[1, 1] = new BoardSquare(1, 1, new Pawn(false));
-            this.boardSquare[1, 2] = new BoardSquare(1, 2, new Pawn(false));
-            this.boardSquare[1, 3] = new BoardSquare(1, 3, new Pawn(false));
-            this.boardSquare[1, 4] = new BoardSquare(1, 4, new Pawn(false));
-            this.boardSquare[1, 5] = new BoardSquare(1, 5, new Pawn(false));
-            this.boardSquare[1, 6] = new BoardSquare(1, 6, new Pawn(false));
-            this.boardSquare[1, 7] = new BoardSquare(1, 7, new Pawn(false));
-
-            // Setup White
-            this.boardSquare[6, 0] = new BoardSquare(6, 0, new Pawn(true));
-            this.boardSquare[6, 1] = new BoardSquare(6, 1, new Pawn(true));
-            this.boardSquare[6, 2] = new BoardSquare(6, 2, new Pawn(true));
-            this.boardSquare[6, 3] = new BoardSquare(6, 3, new Pawn(true));
-            this.boardSquare[6, 4] = new BoardSquare(6, 4, new Pawn(true));
-            this.boardSquare[6, 5] = new BoardSquare(6, 5, new Pawn(true));
-            this.boardSquare[6, 6] = new BoardSquare(6, 6, new Pawn(true));
-            this.boardSquare[6, 7] = new BoardSquare(6, 7, new Pawn(true));
-
-            this.boardSquare[7, 0] = new BoardSquare(7, 0, new Rook(true));
-            this.boardSquare[7, 1] = new BoardSquare(7, 1, new Knight(true));
-            this.boardSquare[7, 2] = new BoardSquare(7, 2, new Bishop(true));
-            this.boardSquare[7, 3] = new BoardSquare(7, 3, new Queen(true));
-            this.boardSquare[7, 4] = new BoardSquare(7, 4, new King(true));
-            this.boardSquare[7, 5] = new BoardSquare(7, 5, new Bishop(true));
-            this.boardSquare[7, 6] = new BoardSquare(7, 6, new Knight(true));
-            this.boardSquare[7, 7] = new BoardSquare(7, 7, new Rook(true));
-
-            // initialize remaining boxes without any piece 
-            for (int i = 2; i < 6; i++)
+            BoardSquare newSquare = new BoardSquare(row, col, piece);
+            boardSquare[row, col] = newSquare;
+        }
+        public void InitializeAllSquaresNull()
+        {
+            for(int i = 0; i < BoardSquaresPerRowCol; i++)
             {
-                for (int j = 0; j < 8; j++)
+                for (int j = 0; j < BoardSquaresPerRowCol; j++)
                 {
                     this.boardSquare[i, j] = new BoardSquare(i, j, null);
                 }
             }
         }
+        public void ResetChessPiecesOnBoard()
+        {
+            // Initialize everything with null boardSquares
+            InitializeAllSquaresNull();
 
+            // Setup Black
+            PlacePiece(0, 0, new Rook(false));
+            PlacePiece(0, 1, new Knight(false));
+            PlacePiece(0, 2, new Bishop(false));
+            PlacePiece(0, 3, new Queen(false));
+            PlacePiece(0, 4, new King(false));
+            PlacePiece(0, 5, new Bishop(false));
+            PlacePiece(0, 6, new Knight(false));
+            PlacePiece(0, 7, new Rook(false));
+
+            PlacePiece(1,0, new Pawn(false));
+            PlacePiece(1,1, new Pawn(false));
+            PlacePiece(1,2, new Pawn(false));
+            PlacePiece(1,3, new Pawn(false));
+            PlacePiece(1,4, new Pawn(false));
+            PlacePiece(1,5, new Pawn(false));
+            PlacePiece(1,6, new Pawn(false));
+            PlacePiece(1,7, new Pawn(false));
+
+
+            // Setup White
+            PlacePiece(6, 0, new Pawn(true));
+            PlacePiece(6, 1, new Pawn(true));
+            PlacePiece(6, 2, new Pawn(true));
+            PlacePiece(6, 3, new Pawn(true));
+            PlacePiece(6, 4, new Pawn(true));
+            PlacePiece(6, 5, new Pawn(true));
+            PlacePiece(6, 6, new Pawn(true));
+            PlacePiece(6, 7, new Pawn(true));
+
+            PlacePiece(7, 0, new Rook(true));
+            PlacePiece(7, 1, new Knight(true));
+            PlacePiece(7, 2, new Bishop(true));
+            PlacePiece(7, 3, new Queen(true));
+            PlacePiece(7, 4, new King(true));
+            PlacePiece(7, 5, new Bishop(true));
+            PlacePiece(7, 6, new Knight(true));
+            PlacePiece(7, 7, new Rook(true));
+        }
     }
 }

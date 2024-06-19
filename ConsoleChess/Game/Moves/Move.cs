@@ -7,18 +7,15 @@ namespace ConsoleChess
         public Player player;
         private BoardSquare start;
         private BoardSquare end;
-        private IGamePiece pieceMoved;
-        private IGamePiece pieceKilled;
-        private bool castlingMove = false;
         public EnumMoveDirections direction;
-        public GameBoard gameBoard; //TODO make private and give access methods
+        public GameBoard gameBoard;
+        public bool _isCastle = false;
 
         public Move(Player player, BoardSquare start, BoardSquare end, GameBoard board)
         {
             this.player = player;
             this.start = start;
             this.end = end;
-            this.pieceMoved = start.getPiece();
             this.direction = this.SetDirection();
             this.gameBoard = board;
         }
@@ -29,6 +26,42 @@ namespace ConsoleChess
 
         public void Execute()
         {
+            if (_isCastle)
+            {
+                if (!player.isWhiteSide() && direction == EnumMoveDirections.EAST)
+                {
+                    gameBoard.GetBoardSquare(0,5)
+                             .setPiece(gameBoard.GetBoardSquare(0,7).getPiece());
+                    
+                    gameBoard.GetBoardSquare(0,7)
+                             .setPiece(null);
+                }
+                if (player.isWhiteSide() && direction == EnumMoveDirections.EAST)
+                {
+                    gameBoard.GetBoardSquare(7, 5)
+                             .setPiece(gameBoard.GetBoardSquare(0, 7).getPiece());
+
+                    gameBoard.GetBoardSquare(0, 7)
+                             .setPiece(null);
+                }
+                if (!player.isWhiteSide() && direction == EnumMoveDirections.WEST)
+                {
+                    gameBoard.GetBoardSquare(0, 5)
+                             .setPiece(gameBoard.GetBoardSquare(0, 7).getPiece());
+
+                    gameBoard.GetBoardSquare(0, 7)
+                             .setPiece(null);
+                }
+                if (player.isWhiteSide() && direction == EnumMoveDirections.WEST)
+                {
+                    gameBoard.GetBoardSquare(0, 5)
+                             .setPiece(gameBoard.GetBoardSquare(0, 7).getPiece());
+
+                    gameBoard.GetBoardSquare(0, 7)
+                             .setPiece(null);
+                }
+            }
+
             this.end.setPiece(this.start.getPiece());
             this.start.setPiece(null);
         }
@@ -123,7 +156,7 @@ namespace ConsoleChess
         }
         public void setCastlingMove(bool castlingMove)
         {
-            this.castlingMove = castlingMove;
+ 
         }
 
         public BoardSquare getStart()

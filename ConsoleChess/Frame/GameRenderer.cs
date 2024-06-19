@@ -57,6 +57,13 @@ namespace ConsoleChess
                 }
             }
         }
+
+        public void DrawRectangle(int startColumn, int startRow, int width, int height, string text = "placeholder")
+        {
+            
+        }
+       
+
         private void SetTileMap(int row, int col, Tile tile)
         {
             tiles[col + (Size * row)] = tile;

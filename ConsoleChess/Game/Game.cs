@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using static System.Console;
 
@@ -6,6 +7,8 @@ namespace ConsoleChess
 {
     public class Game
     {
+        private readonly ILogger<Game> _logger;
+
         private GameRenderer gameRenderer;
         private GameBoard gameBoard;
 
@@ -18,12 +21,16 @@ namespace ConsoleChess
 
         public Game()
         {
+            //_logger = logger;
             gameRenderer = new GameRenderer();
+            //_logger.LogDebug("Game Class Initialized - For testing purposes");
         }
         private void Initialize(Player p1, Player p2)
         {
             this.gameStatus = EnumGameStatus.ACTIVE;
             this.gameBoard = new GameBoard();
+           
+            this.gameBoard.ResetChessPiecesOnBoard();
 
             players[0] = p1;
             players[1] = p2;

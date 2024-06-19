@@ -1,11 +1,12 @@
-﻿using System;
+﻿using ConsoleChess.Pieces;
+using System;
 
 namespace ConsoleChess
 {
     public class King : IGamePiece
     {
-        private bool castlingDone =false;
-        private GameBoard board;
+        //private bool castlingDone =false;
+        //private GameBoard board;
 
         public King(bool white) : base(white)
         {
@@ -16,6 +17,67 @@ namespace ConsoleChess
         public bool canMove(Move move)
         {
             if (IsTargetMyOwnPiece(move) == true) { return false; }
+
+            // Is this a castle?
+            if (!this.HasMoved() && Math.Abs(move.deltaCol()) == 2)
+            {
+                if (move.direction == EnumMoveDirections.WEST)
+                {
+                    if (move.player.isWhiteSide())
+                    {
+                        BoardSquare rookBoardSquare = move.gameBoard.GetBoardSquare(0,7);
+                        if (rookBoardSquare.getPiece() is Rook &&
+                            rookBoardSquare.piece.HasMoved() == false && 
+                            move.gameBoard.GetBoardSquare(7,1).getPiece() == null &&
+                            move.gameBoard.GetBoardSquare(7,2).getPiece() == null &&
+                            move.gameBoard.GetBoardSquare(7,3).getPiece() == null)
+                        {
+                            move._isCastle = true;
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        BoardSquare rookBoardSquare = move.gameBoard.GetBoardSquare(0,0);
+                        if (rookBoardSquare.getPiece() is Rook &&
+                            rookBoardSquare.piece.HasMoved() == false &&
+                            move.gameBoard.GetBoardSquare(0,1).getPiece() == null &&
+                            move.gameBoard.GetBoardSquare(0,2).getPiece() == null &&
+                            move.gameBoard.GetBoardSquare(0,3).getPiece() == null)
+                        {
+                            move._isCastle = true;
+                            return true;
+                        }
+                    }
+                }
+                else if (move.direction == EnumMoveDirections.EAST)
+                {
+                    if (move.player.isWhiteSide())
+                    {
+                        BoardSquare rookBoardSquare = move.gameBoard.GetBoardSquare(7,7);
+                        if (rookBoardSquare.getPiece() is Rook &&
+                            rookBoardSquare.piece.HasMoved() == false &&                            
+                            move.gameBoard.GetBoardSquare(7, 5).getPiece() == null &&
+                            move.gameBoard.GetBoardSquare(7, 6).getPiece() == null)
+                        {
+                            move._isCastle = true;
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        BoardSquare rookBoardSquare = move.gameBoard.GetBoardSquare(7,0);
+                        if (rookBoardSquare.getPiece() is Rook &&
+                            rookBoardSquare.piece.HasMoved() == false &&
+                            move.gameBoard.GetBoardSquare(0, 5).getPiece() == null &&
+                            move.gameBoard.GetBoardSquare(0, 6).getPiece() == null)
+                        {
+                            move._isCastle = true;
+                            return true;
+                        }
+                    }
+                }
+            }
 
             // What kind of move is it?
             if (move.direction == EnumMoveDirections.NORTH || move.direction == EnumMoveDirections.EAST ||
@@ -165,19 +227,7 @@ namespace ConsoleChess
 
             return false;
         }
-        public bool isCastlingDone()
-        {
-            return this.castlingDone = true;
-        }
-        private bool isValidCastling(Move move)
-        {
-            if (this.isCastlingDone())
-            {
-                return false;
-            }
-            // Logic for returning true or false
-            return false;
-        }
+
         private bool IsTargetMyOwnPiece(Move move)
         {
             IGamePiece endPiece = move.getEnd().getPiece();

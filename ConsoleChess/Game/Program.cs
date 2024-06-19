@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Extensions.Logging;
 
 namespace ConsoleChess
 {
@@ -6,12 +7,30 @@ namespace ConsoleChess
     {
         public static void Main(string[] args)
         {
+            // create a logger factory
+            var loggerFactory = LoggerFactory.Create(
+                builder => builder
+                            // add console as logging target
+                            .AddConsole()
+                            // add debug output as logging target
+                            .AddDebug()
+                            // set minimum level to log
+                            .SetMinimumLevel(LogLevel.Debug)
+            );
+
+            // create a logger
+            var logger = loggerFactory.CreateLogger<Program>();
+
+            // logging
+            logger.LogTrace("Startup");
+
             Console.Title = "Console Chess v0.1";
             RunTitleMenu();
         }
 
-        private static void RunTitleMenu()
+        static void RunTitleMenu()
         {
+
             string prompt = @"
 ________/\\\\\\\\\_________________________________________________________/\\\\\\_____________________________         
  _____/\\\////////_________________________________________________________\////\\\_____________________________        
@@ -55,7 +74,6 @@ Welcome to Console Chess. Chess in the terminal!
                     break;
             }
         }
-
         private static void RunGame()
         {
             string prompt = @"
@@ -94,7 +112,6 @@ Welcome to Console Chess. Chess in the terminal!
             EnumGameStatus gameEnding = game.Run();
             RunGame();
         }
-
         private static void ServerBrowser()
         {
             Console.Clear();
@@ -160,7 +177,6 @@ Welcome to Console Chess. Chess in the terminal!
             Console.ReadLine();
             RunGame();
         }
-
         private static void DisplayAbout()
         {
             Console.Clear();
@@ -188,7 +204,6 @@ c$$$cc$$$c  $$""""""""Y$$$$$,     $$$$$      $$$     $$
                     break;
             }
         }
-
         static void ExitProgram()
         {
             // TODO: End Multiplayer sessions
