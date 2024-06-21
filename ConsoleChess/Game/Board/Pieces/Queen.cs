@@ -14,8 +14,8 @@ namespace ConsoleChess.Pieces
             if (IsTargetMyOwnPiece(move) == true) { return false; }
 
             // What kind of move is it?
-            if (move.direction == EnumMoveDirections.NORTH || move.direction == EnumMoveDirections.EAST ||
-                move.direction == EnumMoveDirections.SOUTH || move.direction == EnumMoveDirections.WEST)
+            if (move._direction == EnumMoveDirections.NORTH || move._direction == EnumMoveDirections.EAST ||
+                move._direction == EnumMoveDirections.SOUTH || move._direction == EnumMoveDirections.WEST)
             {
                 return IsValidOrdinal(move);
             }
@@ -41,22 +41,22 @@ namespace ConsoleChess.Pieces
             int rowIterator = 0;
             int colIterator = 0;
 
-            if (move.direction == EnumMoveDirections.NORTHEAST)
+            if (move._direction == EnumMoveDirections.NORTHEAST)
             {
                 rowIterator = -1;
                 colIterator = 1;
             }
-            if (move.direction == EnumMoveDirections.SOUTHEAST)
+            if (move._direction == EnumMoveDirections.SOUTHEAST)
             {
                 rowIterator = 1;
                 colIterator = 1;
             }
-            if (move.direction == EnumMoveDirections.SOUTHWEST)
+            if (move._direction == EnumMoveDirections.SOUTHWEST)
             {
                 rowIterator = 1;
                 colIterator = -1;
             }
-            if (move.direction == EnumMoveDirections.NORTHWEST)
+            if (move._direction == EnumMoveDirections.NORTHWEST)
             {
                 rowIterator = -1;
                 colIterator = -1;
@@ -83,7 +83,7 @@ namespace ConsoleChess.Pieces
                     $"-> New BoardSquare ({nextRow},{nextCol})");
 
                 BoardSquare boardSquare =
-                    move.gameBoard.GetBoardSquare(nextRow, nextCol);
+                    move._gameBoard.GetBoardSquare(nextRow, nextCol);
                 Console.WriteLine($"gameBoard Row {nextRow}; gameBoard Col {nextCol}; Piece {boardSquare.piece}; IsWhite ");
                 if (boardSquare.getPiece() != null)
                 {
@@ -114,8 +114,8 @@ namespace ConsoleChess.Pieces
             int absDeltaRow = Math.Abs(deltaRow);
             int absDeltaCol = Math.Abs(deltaCol);
 
-            if (move.direction == EnumMoveDirections.NORTH || move.direction == EnumMoveDirections.EAST ||
-                move.direction == EnumMoveDirections.SOUTH || move.direction == EnumMoveDirections.WEST)
+            if (move._direction == EnumMoveDirections.NORTH || move._direction == EnumMoveDirections.EAST ||
+                move._direction == EnumMoveDirections.SOUTH || move._direction == EnumMoveDirections.WEST)
             {
                 // one coordinate vector has to be 0
                 if ((absDeltaRow > 1 && absDeltaCol != 0) ||
@@ -128,22 +128,22 @@ namespace ConsoleChess.Pieces
                 int rowIterator = 0;
                 int colIterator = 0;
 
-                if (move.direction == EnumMoveDirections.NORTH)
+                if (move._direction == EnumMoveDirections.NORTH)
                 {
                     rowIterator = -1;
                     colIterator = 0;
                 }
-                if (move.direction == EnumMoveDirections.EAST)
+                if (move._direction == EnumMoveDirections.EAST)
                 {
                     rowIterator = 0;
                     colIterator = 1;
                 }
-                if (move.direction == EnumMoveDirections.SOUTH)
+                if (move._direction == EnumMoveDirections.SOUTH)
                 {
                     rowIterator = 1;
                     colIterator = 0;
                 }
-                if (move.direction == EnumMoveDirections.WEST)
+                if (move._direction == EnumMoveDirections.WEST)
                 {
                     rowIterator = 0;
                     colIterator = -1;
@@ -166,7 +166,7 @@ namespace ConsoleChess.Pieces
                     Console.WriteLine($"Move Multiplier: {i}; Shifting row {shiftRow}; shifting column {startCol}");
 
                     BoardSquare adjacentBoardSquare =
-                        move.gameBoard.boardSquare[nextRow, startCol];
+                        move._gameBoard.boardSquare[nextRow, startCol];
 
                     Console.WriteLine($"gameBoard Row {nextRow}; gameBoard Col {startCol}; Piece {adjacentBoardSquare.piece}; IsWhite ");
 
@@ -184,7 +184,7 @@ namespace ConsoleChess.Pieces
                     Console.WriteLine($"Move Multiplier: {i}; Shifting row {startRow}; shifting column {shiftCol}");
 
                     BoardSquare adjacentBoardSquare =
-                        move.gameBoard.boardSquare[startRow, nextCol];
+                        move._gameBoard.boardSquare[startRow, nextCol];
 
                     Console.WriteLine($"gameBoard Row {startRow}; gameBoard Col {nextCol}; Piece {adjacentBoardSquare.piece}; IsWhite ");
 

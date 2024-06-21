@@ -21,16 +21,16 @@ namespace ConsoleChess
             // Is this a castle?
             if (!this.HasMoved() && Math.Abs(move.deltaCol()) == 2)
             {
-                if (move.direction == EnumMoveDirections.WEST)
+                if (move._direction == EnumMoveDirections.WEST)
                 {
-                    if (move.player.isWhiteSide())
+                    if (move._player.isWhiteSide())
                     {
-                        BoardSquare rookBoardSquare = move.gameBoard.GetBoardSquare(0,7);
+                        BoardSquare rookBoardSquare = move._gameBoard.GetBoardSquare(0,7);
                         if (rookBoardSquare.getPiece() is Rook &&
                             rookBoardSquare.piece.HasMoved() == false && 
-                            move.gameBoard.GetBoardSquare(7,1).getPiece() == null &&
-                            move.gameBoard.GetBoardSquare(7,2).getPiece() == null &&
-                            move.gameBoard.GetBoardSquare(7,3).getPiece() == null)
+                            move._gameBoard.GetBoardSquare(7,1).getPiece() == null &&
+                            move._gameBoard.GetBoardSquare(7,2).getPiece() == null &&
+                            move._gameBoard.GetBoardSquare(7,3).getPiece() == null)
                         {
                             move._isCastle = true;
                             return true;
@@ -38,27 +38,27 @@ namespace ConsoleChess
                     }
                     else
                     {
-                        BoardSquare rookBoardSquare = move.gameBoard.GetBoardSquare(0,0);
+                        BoardSquare rookBoardSquare = move._gameBoard.GetBoardSquare(0,0);
                         if (rookBoardSquare.getPiece() is Rook &&
                             rookBoardSquare.piece.HasMoved() == false &&
-                            move.gameBoard.GetBoardSquare(0,1).getPiece() == null &&
-                            move.gameBoard.GetBoardSquare(0,2).getPiece() == null &&
-                            move.gameBoard.GetBoardSquare(0,3).getPiece() == null)
+                            move._gameBoard.GetBoardSquare(0,1).getPiece() == null &&
+                            move._gameBoard.GetBoardSquare(0,2).getPiece() == null &&
+                            move._gameBoard.GetBoardSquare(0,3).getPiece() == null)
                         {
                             move._isCastle = true;
                             return true;
                         }
                     }
                 }
-                else if (move.direction == EnumMoveDirections.EAST)
+                else if (move._direction == EnumMoveDirections.EAST)
                 {
-                    if (move.player.isWhiteSide())
+                    if (move._player.isWhiteSide())
                     {
-                        BoardSquare rookBoardSquare = move.gameBoard.GetBoardSquare(7,7);
+                        BoardSquare rookBoardSquare = move._gameBoard.GetBoardSquare(7,7);
                         if (rookBoardSquare.getPiece() is Rook &&
                             rookBoardSquare.piece.HasMoved() == false &&                            
-                            move.gameBoard.GetBoardSquare(7, 5).getPiece() == null &&
-                            move.gameBoard.GetBoardSquare(7, 6).getPiece() == null)
+                            move._gameBoard.GetBoardSquare(7, 5).getPiece() == null &&
+                            move._gameBoard.GetBoardSquare(7, 6).getPiece() == null)
                         {
                             move._isCastle = true;
                             return true;
@@ -66,11 +66,11 @@ namespace ConsoleChess
                     }
                     else
                     {
-                        BoardSquare rookBoardSquare = move.gameBoard.GetBoardSquare(7,0);
+                        BoardSquare rookBoardSquare = move._gameBoard.GetBoardSquare(7,0);
                         if (rookBoardSquare.getPiece() is Rook &&
                             rookBoardSquare.piece.HasMoved() == false &&
-                            move.gameBoard.GetBoardSquare(0, 5).getPiece() == null &&
-                            move.gameBoard.GetBoardSquare(0, 6).getPiece() == null)
+                            move._gameBoard.GetBoardSquare(0, 5).getPiece() == null &&
+                            move._gameBoard.GetBoardSquare(0, 6).getPiece() == null)
                         {
                             move._isCastle = true;
                             return true;
@@ -80,8 +80,8 @@ namespace ConsoleChess
             }
 
             // What kind of move is it?
-            if (move.direction == EnumMoveDirections.NORTH || move.direction == EnumMoveDirections.EAST ||
-                move.direction == EnumMoveDirections.SOUTH || move.direction == EnumMoveDirections.WEST)
+            if (move._direction == EnumMoveDirections.NORTH || move._direction == EnumMoveDirections.EAST ||
+                move._direction == EnumMoveDirections.SOUTH || move._direction == EnumMoveDirections.WEST)
             {
                 return IsValidOrdinal(move);
             }
@@ -94,8 +94,8 @@ namespace ConsoleChess
         private bool IsValidOrdinal(Move move)
         {
             // ordinal move rules
-            if (move.direction == EnumMoveDirections.NORTH || move.direction == EnumMoveDirections.EAST ||
-                move.direction == EnumMoveDirections.SOUTH || move.direction == EnumMoveDirections.WEST)
+            if (move._direction == EnumMoveDirections.NORTH || move._direction == EnumMoveDirections.EAST ||
+                move._direction == EnumMoveDirections.SOUTH || move._direction == EnumMoveDirections.WEST)
             {
                 // check if the diagonal move intersects any pieces
                 int deltaRow = move.deltaRow();
@@ -108,22 +108,22 @@ namespace ConsoleChess
 
                     int rowIterator = 0;
                     int colIterator = 0;
-                    if (move.direction == EnumMoveDirections.NORTH)
+                    if (move._direction == EnumMoveDirections.NORTH)
                     {
                         rowIterator = -1;
                         colIterator = 0;
                     }
-                    if (move.direction == EnumMoveDirections.EAST)
+                    if (move._direction == EnumMoveDirections.EAST)
                     {
                         rowIterator = 0;
                         colIterator = 1;
                     }
-                    if (move.direction == EnumMoveDirections.SOUTH)
+                    if (move._direction == EnumMoveDirections.SOUTH)
                     {
                         rowIterator = 1;
                         colIterator = 0;
                     }
-                    if (move.direction == EnumMoveDirections.WEST)
+                    if (move._direction == EnumMoveDirections.WEST)
                     {
                         rowIterator = 0;
                         colIterator = -1;
@@ -132,7 +132,7 @@ namespace ConsoleChess
                     for (int i = 0; i < move.deltaRow(); i++)
                     {
                         BoardSquare nextDiagonalBoardSquare =
-                            move.gameBoard.boardSquare[startRow + rowIterator,
+                            move._gameBoard.boardSquare[startRow + rowIterator,
                                                        startCol + colIterator];
                         if (nextDiagonalBoardSquare.getPiece() != null)
                         {
@@ -151,10 +151,10 @@ namespace ConsoleChess
         private bool IsValidDiagonal(Move move)
         {
             // Diagonal Move Rules
-            if (move.direction == EnumMoveDirections.NORTHEAST ||
-                move.direction == EnumMoveDirections.SOUTHEAST ||
-                move.direction == EnumMoveDirections.SOUTHWEST ||
-                move.direction == EnumMoveDirections.NORTHWEST)
+            if (move._direction == EnumMoveDirections.NORTHEAST ||
+                move._direction == EnumMoveDirections.SOUTHEAST ||
+                move._direction == EnumMoveDirections.SOUTHWEST ||
+                move._direction == EnumMoveDirections.NORTHWEST)
             {
                 // check if the diagonal move intersects any pieces
                 int deltaRow = move.deltaRow();
@@ -168,22 +168,22 @@ namespace ConsoleChess
                     int rowIterator = 0;
                     int colIterator = 0;
 
-                    if (move.direction == EnumMoveDirections.NORTHEAST)
+                    if (move._direction == EnumMoveDirections.NORTHEAST)
                     {
                         rowIterator = -1;
                         colIterator = 1;
                     }
-                    if (move.direction == EnumMoveDirections.SOUTHEAST)
+                    if (move._direction == EnumMoveDirections.SOUTHEAST)
                     {
                         rowIterator = 1;
                         colIterator = 1;
                     }
-                    if (move.direction == EnumMoveDirections.SOUTHWEST)
+                    if (move._direction == EnumMoveDirections.SOUTHWEST)
                     {
                         rowIterator = 1;
                         colIterator = -1;
                     }
-                    if (move.direction == EnumMoveDirections.NORTHWEST)
+                    if (move._direction == EnumMoveDirections.NORTHWEST)
                     {
                         rowIterator = -1;
                         colIterator = -1;
@@ -191,7 +191,7 @@ namespace ConsoleChess
 
                     for (int i = 0; i < (deltaRow - 1); i++)
                     {
-                        BoardSquare nextDiagonalBoardSquare = move.gameBoard.boardSquare[startRow + rowIterator,
+                        BoardSquare nextDiagonalBoardSquare = move._gameBoard.boardSquare[startRow + rowIterator,
                                                                                          startCol + colIterator];
                         if (nextDiagonalBoardSquare.getPiece() != null)
                         {

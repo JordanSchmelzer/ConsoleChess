@@ -180,10 +180,8 @@ namespace ConsoleChess
             Move move = new Move(currentTurn, startBox, endBox, gameBoard);
 
             if (IsMyTurn(move) == false) { return false; }
-            if (move.getStart().getPiece() == null)
-            {
-                return false;
-            }
+            if (move.getStart().getPiece() == null) { return false; }
+
             if (move.getStart().getPiece().canMove(move))
             {
                 move.PreviewMove();
@@ -247,10 +245,6 @@ namespace ConsoleChess
                 this.SetStatus(EnumGameStatus.FOREFIT);
             }
             return EnumUserCommandType.INVALID;
-        }
-        private EnumGameStatus GetStatus()
-        {
-            return this.gameStatus;
         }
         private void SetStatus(EnumGameStatus status)
         {

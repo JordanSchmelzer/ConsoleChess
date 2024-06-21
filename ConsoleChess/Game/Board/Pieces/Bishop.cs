@@ -23,8 +23,8 @@ namespace ConsoleChess.Pieces
             if (absDeltaRow / absDeltaCol != 1) { return false; }
 
             // disallow ordinal moves move
-            if (move.direction == EnumMoveDirections.NORTH || move.direction == EnumMoveDirections.EAST ||
-                move.direction == EnumMoveDirections.SOUTH || move.direction == EnumMoveDirections.WEST)
+            if (move._direction == EnumMoveDirections.NORTH || move._direction == EnumMoveDirections.EAST ||
+                move._direction == EnumMoveDirections.SOUTH || move._direction == EnumMoveDirections.WEST)
             { 
                 return false;
             }
@@ -45,22 +45,22 @@ namespace ConsoleChess.Pieces
             int rowIterator = 0;
             int colIterator = 0;
 
-            if (move.direction == EnumMoveDirections.NORTHEAST)
+            if (move._direction == EnumMoveDirections.NORTHEAST)
             {
                 rowIterator = -1;
                 colIterator = 1;
             }
-            if (move.direction == EnumMoveDirections.SOUTHEAST)
+            if (move._direction == EnumMoveDirections.SOUTHEAST)
             {
                 rowIterator = 1;
                 colIterator = 1;
             }
-            if (move.direction == EnumMoveDirections.SOUTHWEST)
+            if (move._direction == EnumMoveDirections.SOUTHWEST)
             {
                 rowIterator = 1;
                 colIterator = -1;
             }
-            if (move.direction == EnumMoveDirections.NORTHWEST)
+            if (move._direction == EnumMoveDirections.NORTHWEST)
             {
                 rowIterator = -1;
                 colIterator = -1;
@@ -86,7 +86,7 @@ namespace ConsoleChess.Pieces
                     $"-> New BoardSquare ({nextRow},{nextCol})");
 
                 BoardSquare boardSquare =
-                    move.gameBoard.GetBoardSquare(nextRow, nextCol);
+                    move._gameBoard.GetBoardSquare(nextRow, nextCol);
                 Console.WriteLine($"gameBoard Row {nextRow}; gameBoard Col {nextCol}; Piece {boardSquare.piece}; IsWhite ");
                 if (boardSquare.getPiece() != null)
                 {

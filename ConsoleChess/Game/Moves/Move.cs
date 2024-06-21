@@ -1,95 +1,150 @@
-﻿using System.Runtime.CompilerServices;
+﻿using ConsoleChess.Pieces;
+using System;
 
 namespace ConsoleChess
 {
     public class Move
     {
-        public Player player;
-        private BoardSquare start;
-        private BoardSquare end;
-        public EnumMoveDirections direction;
-        public GameBoard gameBoard;
+        public Player _player;
+        public GameBoard _gameBoard;
+        private BoardSquare _start;
+        private BoardSquare _end;
+        public EnumMoveDirections _direction;
         public bool _isCastle = false;
+        public bool _isPawnPromotion = false;
 
         public Move(Player player, BoardSquare start, BoardSquare end, GameBoard board)
         {
-            this.player = player;
-            this.start = start;
-            this.end = end;
-            this.direction = this.SetDirection();
-            this.gameBoard = board;
+            _player = player;
+            _start = start;
+            _end = end;
+            _direction = this.SetDirection();
+            _gameBoard = board;
         }
+
         public void SetPreviewSquare(bool isPreview)
         {
-            this.end.setPreview(isPreview);
+            _end.setPreview(isPreview);
         }
 
         public void Execute()
         {
             if (_isCastle)
             {
-                if (!player.isWhiteSide() && direction == EnumMoveDirections.EAST)
-                {
-                    gameBoard.GetBoardSquare(0,5)
-                             .setPiece(gameBoard.GetBoardSquare(0,7).getPiece());
-                    
-                    gameBoard.GetBoardSquare(0,7)
-                             .setPiece(null);
-                }
-                if (player.isWhiteSide() && direction == EnumMoveDirections.EAST)
-                {
-                    gameBoard.GetBoardSquare(7, 5)
-                             .setPiece(gameBoard.GetBoardSquare(0, 7).getPiece());
-
-                    gameBoard.GetBoardSquare(0, 7)
-                             .setPiece(null);
-                }
-                if (!player.isWhiteSide() && direction == EnumMoveDirections.WEST)
-                {
-                    gameBoard.GetBoardSquare(0, 5)
-                             .setPiece(gameBoard.GetBoardSquare(0, 7).getPiece());
-
-                    gameBoard.GetBoardSquare(0, 7)
-                             .setPiece(null);
-                }
-                if (player.isWhiteSide() && direction == EnumMoveDirections.WEST)
-                {
-                    gameBoard.GetBoardSquare(0, 5)
-                             .setPiece(gameBoard.GetBoardSquare(0, 7).getPiece());
-
-                    gameBoard.GetBoardSquare(0, 7)
-                             .setPiece(null);
-                }
+                PerformCastle();
             }
 
-            this.end.setPiece(this.start.getPiece());
-            this.start.setPiece(null);
+            _end.setPiece(_start.getPiece());
+            _start.setPiece(null);
+
+            if (_isPawnPromotion)
+            {
+                PromotePawn();
+            }
         }
+
+        private void PromotePawn()
+        {
+            bool isValid = true;
+            do
+            {
+                Console.WriteLine("Promote Pawn. Type Piece type and press enter (pawn, rook, bishop, queen, knight)");
+                string userInput = Console.ReadLine().Trim();
+
+                switch (userInput)
+                {
+                    case "pawn":
+                        isValid = true;
+                        break;
+                    case "rook":
+                        _end.setPiece(new Rook(_player.isWhiteSide()));
+                        isValid = true;
+                        break;
+                    case "bishop":
+                        _end.setPiece(new Bishop(_player.isWhiteSide()));
+                        isValid = true;
+                        break;
+                    case "queen":
+                        _end.setPiece(new Queen(_player.isWhiteSide()));
+                        isValid = true;
+                        break;
+                    case "knight":
+                        _end.setPiece(new Knight(_player.isWhiteSide()));
+                        isValid = true;
+                        break;
+                    default:
+                        break;
+                }
+
+            } while (isValid = false);
+            
+        }
+
+        private void PerformCastle()
+        {
+            if (!_player.isWhiteSide() && _direction == EnumMoveDirections.EAST)
+            {
+                CastleBlackRookEast();
+            }
+            if (_player.isWhiteSide() && _direction == EnumMoveDirections.EAST)
+            {
+                CastleWhiteRookEast();
+            }
+            if (!_player.isWhiteSide() && _direction == EnumMoveDirections.WEST)
+            {
+                CastleBlackRookWest();
+            }
+            if (_player.isWhiteSide() && _direction == EnumMoveDirections.WEST)
+            {
+                CastleWhiteRookWest();
+            }
+        }
+        private void CastleWhiteRookEast()
+        {
+            _gameBoard.GetBoardSquare(7, 5).setPiece(_gameBoard.GetBoardSquare(7, 7).getPiece());
+            _gameBoard.GetBoardSquare(7, 7).setPiece(null);
+        }
+        private void CastleWhiteRookWest()
+        {
+            _gameBoard.GetBoardSquare(7, 3).setPiece(_gameBoard.GetBoardSquare(7, 0).getPiece());
+            _gameBoard.GetBoardSquare(7, 0).setPiece(null);
+        }
+        private void CastleBlackRookEast()
+        {
+            _gameBoard.GetBoardSquare(0, 5).setPiece(_gameBoard.GetBoardSquare(0, 7).getPiece());
+            _gameBoard.GetBoardSquare(0, 7).setPiece(null);
+        }
+        private void CastleBlackRookWest()
+        {
+            _gameBoard.GetBoardSquare(0, 3).setPiece(_gameBoard.GetBoardSquare(0, 0).getPiece());
+            _gameBoard.GetBoardSquare(0, 0).setPiece(null);
+        }
+
         public void Undo()
         {
-            this.start.setPiece(this.end.getPiece());
-            this.end.setPiece(null);
-            this.ResetPreview();
+            _start.setPiece(_end.getPiece());
+            _end.setPiece(null);
+            ResetPreview();
         }
         public void PreviewMove()
         {
-            end.setPreview(true);
-            start.setPreview(true);
-            end.setPiece(start.getPiece());
-            start.setPiece(null);
+
+            _end.setPreview(true);
+            _start.setPreview(true);
+            Execute();
         }
         public void ResetPreview()
         {
-            end.setPreview(false);
-            start.setPreview(false);
+            _end.setPreview(false);
+            _start.setPreview(false);
         }
 
         public EnumMoveDirections SetDirection()
         {
-            int startRow = start.GameCol;
-            int startCol = start.GameRow;
-            int endRow = end.GameCol;
-            int endCol = end.GameRow;
+            int startRow = _start.GameCol;
+            int startCol = _start.GameRow;
+            int endRow = _end.GameCol;
+            int endCol = _end.GameRow;
 
             int deltaRow = -(endRow - startRow);
             int deltaCol = (endCol - startCol);
@@ -139,14 +194,14 @@ namespace ConsoleChess
 
         public int deltaRow()
         {
-            int rowStart = start.GameCol;
-            int rowEnd = end.GameCol;
+            int rowStart = _start.GameCol;
+            int rowEnd = _end.GameCol;
             return rowEnd - rowStart;
         }
         public int deltaCol()
         {
-            int colStart = start.GameRow;
-            int colEnd = end.GameRow;
+            int colStart = _start.GameRow;
+            int colEnd = _end.GameRow;
             return colEnd - colStart;
         }
 
@@ -154,18 +209,14 @@ namespace ConsoleChess
         {
             return true;
         }
-        public void setCastlingMove(bool castlingMove)
-        {
- 
-        }
 
         public BoardSquare getStart()
         {
-            return this.start;
+            return _start;
         }
         public BoardSquare getEnd()
         {
-            return this.end;
+            return _end;
         }
     }
 }

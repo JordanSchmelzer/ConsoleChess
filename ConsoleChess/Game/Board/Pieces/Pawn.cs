@@ -32,7 +32,7 @@ namespace ConsoleChess.Pieces
                     if (move.getStart().getPiece().isWhite())
                     {
                         // check white forward
-                        BoardSquare nextSquareForward = move.gameBoard.GetBoardSquare(move.getStart().getGameCol() - 1,
+                        BoardSquare nextSquareForward = move._gameBoard.GetBoardSquare(move.getStart().getGameCol() - 1,
                                                                                  move.getStart().getGameRow());
                         if (nextSquareForward.getPiece() == null)
                         {
@@ -42,7 +42,7 @@ namespace ConsoleChess.Pieces
                     else
                     {
                         // check black forward
-                        BoardSquare nextSquareForward = move.gameBoard.GetBoardSquare(move.getStart().getGameCol() + 1,
+                        BoardSquare nextSquareForward = move._gameBoard.GetBoardSquare(move.getStart().getGameCol() + 1,
                                                                                  move.getStart().getGameRow());
                         if (nextSquareForward.getPiece() == null)
                         {
@@ -69,6 +69,22 @@ namespace ConsoleChess.Pieces
             // Is this a normal one forward square move?
             if ((Math.Abs(move.deltaRow()) == 1 && move.deltaCol() == 0))
             {
+                // is this a pawn promotion move?
+                if (move._player.isWhiteSide())
+                {
+                    if(move.getEnd().getGameRow() == 0)
+                    {
+                        move._isPawnPromotion = true;
+                    }
+                }
+                else
+                {
+                    if (move.getEnd().getGameRow() == 7)
+                    {
+                        move._isPawnPromotion = true;
+                    }
+                }
+
                 Console.WriteLine("1 square forward move accepted");
                 return true;
             }
@@ -93,7 +109,7 @@ namespace ConsoleChess.Pieces
         private bool IsPawnMoveForward(Move move)
         {
             // Check forward movement
-            if (move.player.isWhiteSide())
+            if (move._player.isWhiteSide())
             {
                 // white forward is negative GameRow
                 if (move.deltaRow() > 0)

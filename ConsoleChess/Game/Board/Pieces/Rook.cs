@@ -18,8 +18,8 @@ namespace ConsoleChess.Pieces
             if (IsTargetMyOwnPiece(move) == true) { return false; }
 
             // Only allow North East South West
-            if (move.direction == EnumMoveDirections.NORTHEAST || move.direction == EnumMoveDirections.SOUTHEAST ||
-                move.direction == EnumMoveDirections.SOUTHWEST || move.direction == EnumMoveDirections.NORTHWEST)
+            if (move._direction == EnumMoveDirections.NORTHEAST || move._direction == EnumMoveDirections.SOUTHEAST ||
+                move._direction == EnumMoveDirections.SOUTHWEST || move._direction == EnumMoveDirections.NORTHWEST)
             {
                 return false;
             }
@@ -43,22 +43,22 @@ namespace ConsoleChess.Pieces
             int rowIterator = 0;
             int colIterator = 0;
 
-            if (move.direction == EnumMoveDirections.NORTH)
+            if (move._direction == EnumMoveDirections.NORTH)
             {
                 rowIterator = -1;
                 colIterator = 0;
             }
-            if (move.direction == EnumMoveDirections.EAST)
+            if (move._direction == EnumMoveDirections.EAST)
             {
                 rowIterator = 0;
                 colIterator = 1;
             }
-            if (move.direction == EnumMoveDirections.SOUTH)
+            if (move._direction == EnumMoveDirections.SOUTH)
             {
                 rowIterator = 1;
                 colIterator = 0;
             }
-            if (move.direction == EnumMoveDirections.WEST)
+            if (move._direction == EnumMoveDirections.WEST)
             {
                 rowIterator = 0;
                 colIterator = -1;
@@ -85,7 +85,7 @@ namespace ConsoleChess.Pieces
                 Console.WriteLine($"Move Multiplier: {i}; Shifting row {shiftRow}; shifting column {startCol}");
 
                 BoardSquare adjacentBoardSquare =
-                    move.gameBoard.boardSquare[nextRow, startCol];
+                    move._gameBoard.boardSquare[nextRow, startCol];
 
                 Console.WriteLine($"gameBoard Row {nextRow}; gameBoard Col {startCol}; Piece {adjacentBoardSquare.piece}; IsWhite ");
 
@@ -103,7 +103,7 @@ namespace ConsoleChess.Pieces
                 Console.WriteLine($"Move Multiplier: {i}; Shifting row {startRow}; shifting column {shiftCol}");
 
                 BoardSquare adjacentBoardSquare =
-                    move.gameBoard.boardSquare[startRow, nextCol];
+                    move._gameBoard.boardSquare[startRow, nextCol];
 
                 Console.WriteLine($"gameBoard Row {startRow}; gameBoard Col {nextCol}; Piece {adjacentBoardSquare.piece}; IsWhite ");
 
