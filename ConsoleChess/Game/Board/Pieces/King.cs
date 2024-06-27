@@ -5,21 +5,13 @@ namespace ConsoleChess
 {
     public class King : IGamePiece
     {
-        //private bool castlingDone =false;
-        //private GameBoard board;
-
-        public King(bool white) : base(white)
-        {
-            //this.board = board;
-        }
-
-        override
-        public bool canMove(Move move)
+        public King(bool white) : base(white) { }
+        public override bool CanMove(Move move)
         {
             if (IsTargetMyOwnPiece(move) == true) { return false; }
 
             // Is this a castle?
-            if (!this.HasMoved() && Math.Abs(move.deltaCol()) == 2)
+            if (!this.HasMoved() && Math.Abs(move.DeltaCol()) == 2)
             {
                 if (move._direction == EnumMoveDirections.WEST)
                 {
@@ -91,6 +83,20 @@ namespace ConsoleChess
             }
         }
 
+        private bool IsCheckMate() 
+        {
+            Tuple<int, int> iterators;
+            foreach (EnumMoveDirections e in Enum.GetValues(typeof(EnumMoveDirections)))
+            {
+                iterators =  ReturnRowAndColScanDirections(e);
+                int rowIterator = iterators.Item1;
+                int colIterator = iterators.Item2;
+
+                //Move move = new Move();
+                //if (CanMove(move)) { return true; }
+            }
+            return false;
+        }
         private bool IsValidOrdinal(Move move)
         {
             // ordinal move rules
@@ -98,8 +104,8 @@ namespace ConsoleChess
                 move._direction == EnumMoveDirections.SOUTH || move._direction == EnumMoveDirections.WEST)
             {
                 // check if the diagonal move intersects any pieces
-                int deltaRow = move.deltaRow();
-                int deltaCol = move.deltaCol();
+                int deltaRow = move.DeltaRow();
+                int deltaCol = move.DeltaCol();
 
                 if (Math.Abs(deltaRow) == 1 && Math.Abs(deltaCol) == 1)
                 {
@@ -129,7 +135,7 @@ namespace ConsoleChess
                         colIterator = -1;
                     }
 
-                    for (int i = 0; i < move.deltaRow(); i++)
+                    for (int i = 0; i < move.DeltaRow(); i++)
                     {
                         BoardSquare nextDiagonalBoardSquare =
                             move._gameBoard.boardSquare[startRow + rowIterator,
@@ -157,8 +163,8 @@ namespace ConsoleChess
                 move._direction == EnumMoveDirections.NORTHWEST)
             {
                 // check if the diagonal move intersects any pieces
-                int deltaRow = move.deltaRow();
-                int deltaCol = move.deltaCol();
+                int deltaRow = move.DeltaRow();
+                int deltaCol = move.DeltaCol();
 
                 if (Math.Abs(deltaRow) == 1 && Math.Abs(deltaCol) == 1)
                 {
@@ -227,7 +233,6 @@ namespace ConsoleChess
 
             return false;
         }
-
         private bool IsTargetMyOwnPiece(Move move)
         {
             IGamePiece endPiece = move.getEnd().getPiece();
@@ -240,12 +245,6 @@ namespace ConsoleChess
                     return true;
                 }
             }
-            return false;
-        }
-        public override bool isCastlingMove(Move move)
-        {
-            // check if the starting and ending positin are correct
-            //return this.isValidCastling(this.board, move.getStart(), move.getEnd());
             return false;
         }
     }

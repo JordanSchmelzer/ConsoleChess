@@ -182,7 +182,7 @@ namespace ConsoleChess
             if (IsMyTurn(move) == false) { return false; }
             if (move.getStart().getPiece() == null) { return false; }
 
-            if (move.getStart().getPiece().canMove(move))
+            if (move.getStart().getPiece().CanMove(move))
             {
                 move.PreviewMove();
                 gameRenderer.Render(gameBoard);
@@ -196,7 +196,6 @@ namespace ConsoleChess
                 return false;
             }
         }
-
         private bool IsMyTurn(Move move)
         {
             if ( move.getStart().getPiece() != null)

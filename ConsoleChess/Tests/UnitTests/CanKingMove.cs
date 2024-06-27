@@ -26,7 +26,7 @@ namespace ConsoleChess.Tests.UnitTests
             // Act
             bool canCastleRight = board.GetBoardSquare(0, 4)
                                .getPiece()
-                               .canMove(move);
+                               .CanMove(move);
 
             // Assert
             canCastleRight.Should()
@@ -53,7 +53,7 @@ namespace ConsoleChess.Tests.UnitTests
             // Act
             bool canCastleRight = board.GetBoardSquare(0, 4)
                                .getPiece()
-                               .canMove(move);
+                               .CanMove(move);
 
             // Assert
             canCastleRight.Should()
@@ -80,7 +80,7 @@ namespace ConsoleChess.Tests.UnitTests
             // Act
             bool canCastleRight = board.GetBoardSquare(0, 4)
                                .getPiece()
-                               .canMove(move);
+                               .CanMove(move);
 
             // Assert
             canCastleRight.Should()
@@ -108,7 +108,7 @@ namespace ConsoleChess.Tests.UnitTests
             // Act
             bool canCastleRight = board.GetBoardSquare(0, 4)
                                .getPiece()
-                               .canMove(move);
+                               .CanMove(move);
 
             // Assert
             canCastleRight.Should()

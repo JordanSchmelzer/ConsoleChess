@@ -4,14 +4,12 @@ namespace ConsoleChess.Pieces
 {
     public class Queen : IGamePiece
     {
-        public Queen(bool white) : base(white)
-        {
-
-        }
+        public Queen(bool white) : base(white) { }
         override
-        public bool canMove(Move move)
+        public bool CanMove(Move move)
         {
             if (IsTargetMyOwnPiece(move) == true) { return false; }
+            if (IsPlayersKingInCheck(move._gameBoard,move._player)) { return false; }
 
             // What kind of move is it?
             if (move._direction == EnumMoveDirections.NORTH || move._direction == EnumMoveDirections.EAST ||
@@ -24,12 +22,11 @@ namespace ConsoleChess.Pieces
                 return IsValidDiagonal(move);
             }
         }
-
         private bool IsValidDiagonal(Move move)
         {
             IGamePiece endPiece = move.getEnd().getPiece();
-            int deltaRow = move.deltaRow();
-            int deltaCol = move.deltaCol();
+            int deltaRow = move.DeltaRow();
+            int deltaCol = move.DeltaCol();
             int absDeltaRow = Math.Abs(deltaRow);
             int absDeltaCol = Math.Abs(deltaCol);
 
@@ -109,8 +106,8 @@ namespace ConsoleChess.Pieces
         }
         private bool IsValidOrdinal(Move move)
         {
-            int deltaRow = move.deltaRow();
-            int deltaCol = move.deltaCol();
+            int deltaRow = move.DeltaRow();
+            int deltaCol = move.DeltaCol();
             int absDeltaRow = Math.Abs(deltaRow);
             int absDeltaCol = Math.Abs(deltaCol);
 
@@ -211,7 +208,6 @@ namespace ConsoleChess.Pieces
             }
             return false;
         }
-
         private bool IsTargetMyOwnPiece(Move move)
         {
             IGamePiece endPiece = move.getEnd().getPiece();
@@ -226,10 +222,5 @@ namespace ConsoleChess.Pieces
             }
             return false;
         }
-        public override bool isCastlingMove(Move move)
-        {
-            return false;
-        }
-        // private bool isCheck(){}
     }
 }

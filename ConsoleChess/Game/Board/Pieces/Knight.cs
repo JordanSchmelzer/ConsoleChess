@@ -7,14 +7,18 @@ namespace ConsoleChess.Pieces
         public Knight(bool white) : base(white) { }
 
         override
-        public bool canMove(Move move)
+        public bool CanMove(Move move)
         {
+            // 
             if (IsTargetMyOwnPiece(move)) { return false; }
             if (IsLShapedMove(move) == false) { return false; }
+            if (IsPlayersKingInCheck(move._gameBoard, move._player)) { return false; }
+
+            // Pass Conditions
             if (IsValidCapture(move)) { return true; }
             if (IsValidMove(move)) { return true; }
 
-            Console.WriteLine("Invalid Move! Reason: Not a recognized valid move.");
+            // Default
             return false;
         }
         private bool IsValidCapture(Move move)
@@ -22,7 +26,6 @@ namespace ConsoleChess.Pieces
             // Check L capture
             if (move.getEnd().getPiece() != null)
             {
-                Console.WriteLine("Log: Diagonal Capture Accepted");
                 return true;
             }
             return false;
@@ -32,7 +35,6 @@ namespace ConsoleChess.Pieces
             // If landing on null square allow this move
             if (move.getEnd().getPiece() == null)
             {
-                Console.WriteLine("Log: Diagonal Move Accepted");
                 return true;
             }
             return false;
@@ -41,7 +43,6 @@ namespace ConsoleChess.Pieces
         {
             IGamePiece endPiece = move.getEnd().getPiece();
             IGamePiece startPiece = move.getStart().getPiece();
-
             if (endPiece != null)
             {
                 if (endPiece.isWhite() == startPiece.isWhite())
@@ -53,12 +54,10 @@ namespace ConsoleChess.Pieces
         }
         private bool IsLShapedMove(Move move)
         {
-            int deltaRow = move.deltaRow();
-            int deltaCol = move.deltaCol();
+            int deltaRow = move.DeltaRow();
+            int deltaCol = move.DeltaCol();
             int absDeltaRow = Math.Abs(deltaRow);
             int absDeltaCol = Math.Abs(deltaCol);
-
-            // is this an L shaped move?
             if (absDeltaRow > 2 || absDeltaCol > 2)
             {
                 return false;
@@ -67,7 +66,6 @@ namespace ConsoleChess.Pieces
             {
                 return false;
             }
-
             if ((absDeltaRow == 2 && absDeltaCol != 1) ||
                ((absDeltaRow) == 1 && absDeltaCol != 2))
             {
@@ -75,13 +73,5 @@ namespace ConsoleChess.Pieces
             }
             return true;
         }
-        
-        // public bool IsMoveCheckMate(){}
-        // public bool IsMove
-        public override bool isCastlingMove(Move move)
-        {
-            return false;
-        }
-        
     }
 }

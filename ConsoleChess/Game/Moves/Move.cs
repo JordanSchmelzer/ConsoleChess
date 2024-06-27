@@ -189,23 +189,23 @@ namespace ConsoleChess
             {
                 return EnumMoveDirections.NORTHWEST;
             }
-            return EnumMoveDirections.NONE;
+            return EnumMoveDirections.NORTH;
         }
 
-        public int deltaRow()
+        public int DeltaRow()
         {
             int rowStart = _start.GameCol;
             int rowEnd = _end.GameCol;
             return rowEnd - rowStart;
         }
-        public int deltaCol()
+        public int DeltaCol()
         {
             int colStart = _start.GameRow;
             int colEnd = _end.GameRow;
             return colEnd - colStart;
         }
 
-        public bool isCastlingMove()
+        public bool IsCastlingMove()
         {
             return true;
         }

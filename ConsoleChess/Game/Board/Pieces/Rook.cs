@@ -7,118 +7,75 @@ namespace ConsoleChess.Pieces
         public Rook(bool white) : base(white) { }
 
         override
-        public bool canMove(Move move)
+        public bool CanMove(Move move)
         {
-            int deltaRow = move.deltaRow();
-            int deltaCol = move.deltaCol();
+            int deltaRow = move.DeltaRow();
+            int deltaCol = move.DeltaCol();
             int absDeltaRow = Math.Abs(deltaRow);
             int absDeltaCol = Math.Abs(deltaCol);
 
-            // dont let player take their own piece
+            // Fail Conditions
             if (IsTargetMyOwnPiece(move) == true) { return false; }
-
-            // Only allow North East South West
-            if (move._direction == EnumMoveDirections.NORTHEAST || move._direction == EnumMoveDirections.SOUTHEAST ||
-                move._direction == EnumMoveDirections.SOUTHWEST || move._direction == EnumMoveDirections.NORTHWEST)
-            {
-                return false;
-            }
-
-            // one coordinate vector has to be 0
-            if ((absDeltaRow > 1 && absDeltaCol != 0) ||
-                (deltaRow != 0 && absDeltaCol > 1))
-            {
-                return false;
-            }
-
+            if (!IsCardinalMove(move._direction)) { return false; }
+            if ((absDeltaRow > 1 && absDeltaCol != 0) || (deltaRow != 0 && absDeltaCol > 1)) { return false; }
             if (IsPathToEndSquareClear(move) == false) { return false; }
+            if (IsPlayersKingInCheck(move._gameBoard, move._player)) { return false; }
+
+            // Pass Conditions
             if (IsValidMove(move)) { return true; }
             if (IsValidCapture(move)) { return true; }
 
-            Console.WriteLine("Invalid Move! Reason: Not a recognized valid move.");
+            // Default
             return false;
         }
         private bool IsPathToEndSquareClear(Move move)
         {
-            int rowIterator = 0;
-            int colIterator = 0;
-
-            if (move._direction == EnumMoveDirections.NORTH)
-            {
-                rowIterator = -1;
-                colIterator = 0;
-            }
-            if (move._direction == EnumMoveDirections.EAST)
-            {
-                rowIterator = 0;
-                colIterator = 1;
-            }
-            if (move._direction == EnumMoveDirections.SOUTH)
-            {
-                rowIterator = 1;
-                colIterator = 0;
-            }
-            if (move._direction == EnumMoveDirections.WEST)
-            {
-                rowIterator = 0;
-                colIterator = -1;
-            }
-
-            // Gameboard layout example:
-            // Top Left Black Rook gameboard[0,0]
-            // Bottom Right White Rook gameboard[7,7]
-
-            // Are there any pieces in the way of this move?
-            int startRow = move.getStart().getGameCol();
-            int startCol = move.getStart().getGameRow();
-            int deltaRow = move.deltaRow();
-            int deltaCol = move.deltaCol();
-            int absDeltaRow = Math.Abs(deltaRow);
+            int deltaCol = move.DeltaCol();
             int absDeltaCol = Math.Abs(deltaCol);
+            int deltaRow = move.DeltaRow();
+            int absDeltaRow = Math.Abs(deltaRow);
 
-            // ROW
-            for (int i = 1; i < absDeltaRow; i++)
+            Tuple<int, int> directionIterator = ReturnRowAndColScanDirections(move._direction);
+
+            int countOfSquaresToCheck = 0;
+            switch (move._direction)
             {
-                int shiftRow = rowIterator * i;
-                int nextRow = shiftRow + startRow;
-
-                Console.WriteLine($"Move Multiplier: {i}; Shifting row {shiftRow}; shifting column {startCol}");
-
-                BoardSquare adjacentBoardSquare =
-                    move._gameBoard.boardSquare[nextRow, startCol];
-
-                Console.WriteLine($"gameBoard Row {nextRow}; gameBoard Col {startCol}; Piece {adjacentBoardSquare.piece}; IsWhite ");
-
-                if (adjacentBoardSquare.getPiece() != null)
-                {
-                    return false;
-                }
+                case EnumMoveDirections.EAST:
+                    countOfSquaresToCheck = absDeltaCol;
+                    break;
+                case EnumMoveDirections.WEST:
+                    countOfSquaresToCheck = absDeltaCol;
+                    break;
+                case EnumMoveDirections.NORTH:
+                    countOfSquaresToCheck = absDeltaRow;
+                    break;
+                case EnumMoveDirections.SOUTH:
+                    countOfSquaresToCheck = absDeltaRow;
+                    break;
             }
-            // COLUMN
-            for (int i = 1; i < absDeltaCol; i++)
+
+            int startRow = move.getStart().GameCol;
+            int startCol = move.getStart().GameRow;
+
+            for (int i = 1; i < countOfSquaresToCheck; i++)
             {
-                int shiftCol = colIterator * i;
+                int shiftRow = directionIterator.Item1 * i;
+                int shiftCol = directionIterator.Item2 * i;
+                int nextRow = shiftRow + startRow;
                 int nextCol = shiftCol + startCol;
 
-                Console.WriteLine($"Move Multiplier: {i}; Shifting row {startRow}; shifting column {shiftCol}");
-
-                BoardSquare adjacentBoardSquare =
-                    move._gameBoard.boardSquare[startRow, nextCol];
-
-                Console.WriteLine($"gameBoard Row {startRow}; gameBoard Col {nextCol}; Piece {adjacentBoardSquare.piece}; IsWhite ");
-
-                if (adjacentBoardSquare.getPiece() != null)
+                BoardSquare boardSquare = move._gameBoard.GetBoardSquare(nextRow, nextCol);
+                if (boardSquare.getPiece() != null)
                 {
                     return false;
                 }
             }
 
-            return true; 
+            return true;
         }
         private bool IsValidMove(Move move)
         {
-            // Check ordinal capture
-            if ((move.getEnd().piece != null))
+            if ((move.getEnd().piece == null))
             {
                 Console.WriteLine("Log: Ordinal Capture Accepted");
                 return true;
@@ -128,7 +85,7 @@ namespace ConsoleChess.Pieces
         private bool IsValidCapture(Move move)
         {
             // If landing on null square allow this move
-            if (move.getEnd().piece == null)
+            if (move.getEnd().piece != null)
             {
                 Console.WriteLine("Log: Ordinal Move Accepted");
                 return true;
@@ -139,7 +96,6 @@ namespace ConsoleChess.Pieces
         {
             IGamePiece endPiece = move.getEnd().getPiece();
             IGamePiece startPiece = move.getStart().getPiece();
-
             if (endPiece != null)
             {
                 if (endPiece.isWhite() == startPiece.isWhite())
@@ -147,10 +103,6 @@ namespace ConsoleChess.Pieces
                     return true;
                 }
             }
-            return false;
-        }
-        public override bool isCastlingMove(Move move)
-        {
             return false;
         }
     }
