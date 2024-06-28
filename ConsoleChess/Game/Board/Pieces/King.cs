@@ -83,6 +83,7 @@ namespace ConsoleChess
             }
         }
 
+        // if the king has no available moves, then game over!
         private bool IsCheckMate() 
         {
             Tuple<int, int> iterators;

@@ -54,45 +54,93 @@ namespace ConsoleChess
             this.isPreview = isPreview;
         }
 
+        // Generate a list of possible moves
+
         /// <summary>
         /// This is the algorithm to knowing if player king is in check
         /// </summary>
         /// <returns></returns>
-        public bool IsPlayersKingInCheck(GameBoard board, Player currentPlayer)
+        public bool IsPlayersKingInCheck(Move move)
         {
-            BoardSquare kingSquare = null;
-            bool isWhite = currentPlayer.isWhiteSide();
+            GameBoard board = move._gameBoard;
+            Player currentPlayer = move._player;
+
+            BoardSquare kingSquare = ReturnPlayersKingBoardSquare(move);
+            List<BoardSquare> attackVectors = PottentialAttackersBoardSquares(move, kingSquare);
+            List<BoardSquare> activeThreats = AttackingPieces(move, attackVectors, kingSquare);
+
+            // of all the potential attack squares, there are no pieces able to attack the king
+            if (activeThreats.Count == 0) 
+            {
+                return false; 
+            }
+            if (activeThreats.Count > 0)
+            {
+                return  true; 
+            }
+            return false;
+        }
+
+        private List<BoardSquare> AttackingPieces(Move move,
+                                                  List<BoardSquare> potentialAttackers,
+                                                  BoardSquare kingSquare)
+        {
+            List<BoardSquare> activeThreats = new List<BoardSquare>(potentialAttackers.Count);
+            if (potentialAttackers.Count == 0) 
+            {
+                return activeThreats;
+            }
+
+            // check to see if any of these pieces are able to attack the kingsquare
+            foreach (BoardSquare potentialAttackerSquare in potentialAttackers)
+            {
+                if (potentialAttackerSquare != null)
+                {
+                    Move checkMove = new Move(move._player,
+                                              potentialAttackerSquare,
+                                              kingSquare,
+                                              move._gameBoard);
+
+                    if (potentialAttackerSquare.piece.CanMove(checkMove))
+                    {
+                        Console.WriteLine($"King is in check from: {potentialAttackerSquare.piece}");
+                        activeThreats.Add(potentialAttackerSquare);
+                    }
+                }
+            }
+
+            return activeThreats;
+        }
+
+        private List<BoardSquare> PottentialAttackersBoardSquares(Move move, BoardSquare kingSquare)
+        {
+            // List all of the squares that can directly see the king with no piece inbetween
+            List<BoardSquare> attackVectors = new List<BoardSquare>();
+            foreach (EnumMoveDirections e in Enum.GetValues(typeof(EnumMoveDirections)))
+            {
+                attackVectors.Add(FirstVisiblePieceInDirection(move._gameBoard, kingSquare, e));
+            }
+            // Also look in L shaped attack vectors
+            // todo :) gl future me, be sure to check for edge of board
+            return attackVectors;
+        }
+
+        private BoardSquare ReturnPlayersKingBoardSquare(Move move)
+        {
             for (int row = 0; row < 8; row++)
             {
                 for (int col = 0; col < 8; col++)
                 {
-                    if (board.GetBoardSquare(row, col).getPiece() is King &&
-                       board.GetBoardSquare(row, col).getPiece().isWhite() == currentPlayer.isWhiteSide())
+                    if (move._gameBoard.GetBoardSquare(row, col).getPiece() is King &&
+                       move._gameBoard.GetBoardSquare(row, col).getPiece().isWhite() == move._player.isWhiteSide())
                     {
-                        kingSquare = board.GetBoardSquare(row, col);
+                        return move._gameBoard.GetBoardSquare(row, col);
                     }
                 }
             }
-            List<BoardSquare> attackVectors = new List<BoardSquare>();
-            foreach (EnumMoveDirections e in Enum.GetValues(typeof(EnumMoveDirections)))
-            {
-                attackVectors.Add(FirstVisiblePieceInDirection(board, kingSquare, e));
-            }
-            foreach (BoardSquare potentialAttackerSquare in attackVectors)
-            {
-                if (potentialAttackerSquare != null)
-                {
-                    Move checkMove = new Move(currentPlayer, potentialAttackerSquare, kingSquare, board);
-                    if (potentialAttackerSquare.piece.CanMove(checkMove))
-                    {
-                        Console.WriteLine("King is in check from: ");
-                        return true;
-                    }
-                }
-            }
-            Console.WriteLine("King is not in check");
-            return false;
+            return null;
         }
+
         private BoardSquare FirstVisiblePieceInDirection(GameBoard board,
                                                         BoardSquare pieceSquare,
                                                         EnumMoveDirections direction)

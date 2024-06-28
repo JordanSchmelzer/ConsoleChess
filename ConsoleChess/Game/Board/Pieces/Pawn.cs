@@ -12,7 +12,14 @@ namespace ConsoleChess.Pieces
             // Fail conditions
             if (IsTargetMyOwnPiece(move) == true) { return false; }
             if (IsPawnMoveForward(move) == false) { return false; }
-            if (IsPlayersKingInCheck(move._gameBoard, move._player)) { return false; }
+            
+            if (IsPlayersKingInCheck(move))
+            {
+                // does this move end check?
+                move.Execute();
+                // if it ends check allow move    
+                return false;
+            }
 
             // Pass conditions
             if (IsValidTwoForwardSquareMove(move)) { return true; }
