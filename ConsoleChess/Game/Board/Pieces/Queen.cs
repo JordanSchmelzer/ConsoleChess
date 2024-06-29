@@ -10,46 +10,6 @@ namespace ConsoleChess.Pieces
         {
             if (IsTargetMyOwnPiece(move) == true) { return false; }
 
-            if (IsPlayersKingInCheck(move))
-            {
-                // if this piece moves to the end square, does that end check?
-                move.getEnd().setPiece(this);
-                if (IsPlayersKingInCheck(move))
-                {
-                    // if its still in check, return false & undo move
-                    move.getEnd().setPiece(null);
-                    return false;
-                }
-                // undo the move
-                move.getEnd().setPiece(null);
-
-                // if it ends check allow move with normal pass conditions
-                // What kind of move is it?
-                if (move._direction == EnumMoveDirections.NORTH || move._direction == EnumMoveDirections.EAST ||
-                    move._direction == EnumMoveDirections.SOUTH || move._direction == EnumMoveDirections.WEST)
-                {
-                    return IsValidOrdinal(move);
-                }
-                else
-                {
-                    return IsValidDiagonal(move);
-                }
-            }
-            else
-            {
-                // does this move put the king in check?
-                // if this piece moves to the end square, does that end check?
-                move.getEnd().setPiece(this);
-                if (IsPlayersKingInCheck(move))
-                {
-                    // if its still in check, return false & undo move
-                    move.getEnd().setPiece(null);
-                    return false;
-                }
-                // undo the move
-                move.getEnd().setPiece(null);
-            }
-
             // What kind of move is it?
             if (move._direction == EnumMoveDirections.NORTH || move._direction == EnumMoveDirections.EAST ||
                 move._direction == EnumMoveDirections.SOUTH || move._direction == EnumMoveDirections.WEST)
