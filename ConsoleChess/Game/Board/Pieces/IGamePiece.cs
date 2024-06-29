@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
+using ConsoleChess.Pieces;
 
 namespace ConsoleChess
 {
@@ -62,9 +63,6 @@ namespace ConsoleChess
         /// <returns></returns>
         public bool IsPlayersKingInCheck(Move move)
         {
-            GameBoard board = move._gameBoard;
-            Player currentPlayer = move._player;
-
             BoardSquare kingSquare = ReturnPlayersKingBoardSquare(move);
             List<BoardSquare> attackVectors = PottentialAttackersBoardSquares(move, kingSquare);
             List<BoardSquare> activeThreats = AttackingPieces(move, attackVectors, kingSquare);
@@ -116,13 +114,76 @@ namespace ConsoleChess
         {
             // List all of the squares that can directly see the king with no piece inbetween
             List<BoardSquare> attackVectors = new List<BoardSquare>();
-            foreach (EnumMoveDirections e in Enum.GetValues(typeof(EnumMoveDirections)))
-            {
-                attackVectors.Add(FirstVisiblePieceInDirection(move._gameBoard, kingSquare, e));
-            }
-            // Also look in L shaped attack vectors
-            // todo :) gl future me, be sure to check for edge of board
+            BoardSquare boardSquare;
+
+            boardSquare = FirstVisiblePieceInDirection(move._gameBoard, kingSquare, EnumMoveDirections.SOUTH, move._player);
+            if (boardSquare != null) { attackVectors.Add(boardSquare); }
+            boardSquare = FirstVisiblePieceInDirection(move._gameBoard, kingSquare, EnumMoveDirections.NORTH, move._player);
+            if (boardSquare != null) { attackVectors.Add(boardSquare); }
+            boardSquare = FirstVisiblePieceInDirection(move._gameBoard, kingSquare, EnumMoveDirections.EAST, move._player);
+            if (boardSquare != null) { attackVectors.Add(boardSquare); }
+            boardSquare = FirstVisiblePieceInDirection(move._gameBoard, kingSquare, EnumMoveDirections.WEST, move._player);
+            if (boardSquare != null) { attackVectors.Add(boardSquare); }
+            boardSquare = FirstVisiblePieceInDirection(move._gameBoard, kingSquare, EnumMoveDirections.NORTHEAST, move._player);
+            if (boardSquare != null) { attackVectors.Add(boardSquare); }
+            boardSquare = FirstVisiblePieceInDirection(move._gameBoard, kingSquare, EnumMoveDirections.NORTHWEST, move._player);
+            if (boardSquare != null) { attackVectors.Add(boardSquare); }
+            boardSquare = FirstVisiblePieceInDirection(move._gameBoard, kingSquare, EnumMoveDirections.SOUTHWEST, move._player);
+            if (boardSquare != null) { attackVectors.Add(boardSquare); }
+            boardSquare = FirstVisiblePieceInDirection(move._gameBoard, kingSquare, EnumMoveDirections.SOUTHEAST, move._player);
+            if (boardSquare != null) { attackVectors.Add(boardSquare); }
+
+            BoardSquare potentialKnight = null;
+            // NorthEast       
+            potentialKnight = PotentialKnightAttacker(move, kingSquare, -2, 1);
+            if (potentialKnight != null) { attackVectors.Add(potentialKnight);}
+
+            potentialKnight = PotentialKnightAttacker(move, kingSquare, -1, 2);
+            if (potentialKnight != null) { attackVectors.Add(potentialKnight); }
+
+            // SouthEast
+            potentialKnight = PotentialKnightAttacker(move, kingSquare, 1, 2);
+            if (potentialKnight != null) { attackVectors.Add(potentialKnight); }
+
+            potentialKnight = PotentialKnightAttacker(move, kingSquare, 2, 1);
+            if (potentialKnight != null) { attackVectors.Add(potentialKnight); }
+
+            // SouthWest
+            potentialKnight = PotentialKnightAttacker(move, kingSquare, 2, -1);
+            if (potentialKnight != null) { attackVectors.Add(potentialKnight); }
+
+            potentialKnight = PotentialKnightAttacker(move, kingSquare, 1, -2);
+            if (potentialKnight != null) { attackVectors.Add(potentialKnight); }
+
+            // NorthWest
+            potentialKnight = PotentialKnightAttacker(move, kingSquare, -1, -2);
+            if (potentialKnight != null) { attackVectors.Add(potentialKnight); }
+
+            potentialKnight = PotentialKnightAttacker(move, kingSquare, -2, -11);
+            if (potentialKnight != null) { attackVectors.Add(potentialKnight); }
+
             return attackVectors;
+        }
+
+        private BoardSquare PotentialKnightAttacker(Move move, BoardSquare kingSquare, int row, int col)
+        {
+            int kingSquareRow = kingSquare.getGameRow();
+            int kingSquareCol = kingSquare.getGameCol();
+            int deltaRow = kingSquareRow + row;
+            int deltaCol = kingSquareCol + col;
+
+            if (deltaCol > 8 && deltaCol <= 0 &&
+                deltaRow > 8 && deltaRow <= 0)
+            {
+                BoardSquare potentialKnight = move._gameBoard.GetBoardSquare(deltaRow, deltaCol);
+                if (potentialKnight.getPiece() is Knight && 
+                    potentialKnight.getPiece().isWhite() !=
+                    move._player.isWhiteSide())
+                {
+                    return potentialKnight;
+                }
+            }
+            return null;
         }
 
         private BoardSquare ReturnPlayersKingBoardSquare(Move move)
@@ -143,7 +204,8 @@ namespace ConsoleChess
 
         private BoardSquare FirstVisiblePieceInDirection(GameBoard board,
                                                         BoardSquare pieceSquare,
-                                                        EnumMoveDirections direction)
+                                                        EnumMoveDirections direction,
+                                                        Player player)
         {
             Tuple<int, int> scanVector = ReturnRowAndColScanDirections(direction);
             int rowIterator = scanVector.Item1;
@@ -159,9 +221,13 @@ namespace ConsoleChess
                 if (nextRow > 7 || nextCol > 7 || nextRow < 0 || nextCol < 0) { return null; }
 
                 BoardSquare nextSquare = board.GetBoardSquare(nextRow, nextCol);
-                if (nextSquare.piece != null)
+                if (nextSquare.piece != null)                    
                 {
-                    return nextSquare;
+                    if (nextSquare.piece.isWhite() != player.isWhiteSide())
+                    {
+                        return nextSquare;
+                    }
+                    return null;
                 }
             }
             return null;

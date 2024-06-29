@@ -19,7 +19,40 @@ namespace ConsoleChess.Pieces
             if (IsCardinalMove(move._direction)) {  return false; }
             if (IsPathToEndSquareClear(move) == false) { return false; }
 
-            if (IsPlayersKingInCheck(move._gameBoard, move._player)) { return false; }
+            if (IsPlayersKingInCheck(move))
+            {
+                // if this piece moves to the end square, does that end check?
+                move.getEnd().setPiece(this);
+                if (IsPlayersKingInCheck(move))
+                {
+                    // if its still in check, return false & undo move
+                    move.getEnd().setPiece(null);
+                    return false;
+                }
+                // undo the move
+                move.getEnd().setPiece(null);
+
+                // if it ends check allow move with normal pass conditions
+                if (IsValidDiagonalCapture(move)) { return true; }
+                if (IsValidDiagonalMove(move)) { return true; }
+
+                // if its not a valid move to end check, return false
+                return false;
+            }
+            else
+            {
+                // does this move put the king in check?
+                // if this piece moves to the end square, does that end check?
+                move.getEnd().setPiece(this);
+                if (IsPlayersKingInCheck(move))
+                {
+                    // if its still in check, return false & undo move
+                    move.getEnd().setPiece(null);
+                    return false;
+                }
+                // undo the move
+                move.getEnd().setPiece(null);
+            }
 
             if (IsValidDiagonalCapture(move)) { return true; }
             if (IsValidDiagonalMove(move)) { return true; }

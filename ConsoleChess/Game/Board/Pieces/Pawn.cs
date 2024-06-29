@@ -12,13 +12,42 @@ namespace ConsoleChess.Pieces
             // Fail conditions
             if (IsTargetMyOwnPiece(move) == true) { return false; }
             if (IsPawnMoveForward(move) == false) { return false; }
-            
+
             if (IsPlayersKingInCheck(move))
             {
-                // does this move end check?
-                move.Execute();
-                // if it ends check allow move    
+                // if this piece moves to the end square, does that end check?
+                move.getEnd().setPiece(this);
+                if (IsPlayersKingInCheck(move))
+                {
+                    // if its still in check, return false & undo move
+                    move.getEnd().setPiece(null);
+                    return false;
+                }
+                // undo the move
+                move.getEnd().setPiece(null);
+
+                // if it ends check allow move with normal pass conditions
+                if (IsValidTwoForwardSquareMove(move)) { return true; }
+                if (IsValidDiagonalCapture(move)) { return true; }
+                if (IsValidEnPassant(move)) { return true; }
+                if (IsOneSquareFormwardMove(move)) { return true; }
+
+                // if its not a valid move to end check, return false
                 return false;
+            }
+            else
+            {
+                // does this move put the king in check?
+                // if this piece moves to the end square, does that end check?
+                move.getEnd().setPiece(this);
+                if (IsPlayersKingInCheck(move))
+                {
+                    // if its still in check, return false & undo move
+                    move.getEnd().setPiece(null);
+                    return false;
+                }
+                // undo the move
+                move.getEnd().setPiece(null);
             }
 
             // Pass conditions
