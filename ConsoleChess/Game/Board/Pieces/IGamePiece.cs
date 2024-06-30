@@ -100,7 +100,7 @@ namespace ConsoleChess
 
         public bool IsDiagonalMove(EnumMoveDirections direction) {
             throw new NotImplementedException("todo");
-            return false;
+            //return false;
         }
 
         public bool IsCardinalMove(EnumMoveDirections direction) {

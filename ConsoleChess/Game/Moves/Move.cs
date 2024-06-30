@@ -76,7 +76,7 @@ namespace ConsoleChess
                         break;
                 }
 
-            } while (isValid = false);
+            } while (isValid == false);
             
         }
 

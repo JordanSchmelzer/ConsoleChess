@@ -1,5 +1,6 @@
 ﻿using ConsoleChess.Pieces;
 using System;
+using System.Text.Json;
 
 namespace ConsoleChess
 {
@@ -9,10 +10,12 @@ namespace ConsoleChess
         public const int PixelsPerBoardSquare = 8;
         public const int BoardSquaresPerRowCol = 8;
 
-        public BoardSquare[,] boardSquare = 
-            new BoardSquare[BoardSquaresPerRowCol, BoardSquaresPerRowCol];
+        public BoardSquare[,] boardSquare { get; set; }
 
-        public GameBoard() { }
+
+        public GameBoard() {
+            boardSquare = new BoardSquare[BoardSquaresPerRowCol, BoardSquaresPerRowCol];
+        }
         public BoardSquare GetBoardSquare(int x, int y)
         {
             if (x < 0 || x > 7 || y < 0 || y > 7)
@@ -79,6 +82,16 @@ namespace ConsoleChess
             PlacePiece(7, 5, new Bishop(true));
             PlacePiece(7, 6, new Knight(true));
             PlacePiece(7, 7, new Rook(true));
+        }
+    }
+
+    // Reflection deep clone
+    static class CloneExtensionn
+    {
+        public static T Clone<T>(this T obj)
+        {
+            string jsonString = JsonSerializer.Serialize(obj);
+            return JsonSerializer.Deserialize<T>(jsonString);
         }
     }
 }
