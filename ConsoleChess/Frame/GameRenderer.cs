@@ -9,22 +9,62 @@ namespace ConsoleChess
         public const int PixelsPerSquare = 8;
         public Tile[] tiles = new Tile[Size * Size];
 
-        public GameRenderer()
-        {
-            InitializeTilesWithDefaultType();
+        public GameRenderer() {
+            
         }
 
-        public void Render(GameBoard gameBoard)
-        {
-            Console.Clear();
-            //
-            DrawGameBoardSquares();
-            DrawGamePieces(gameBoard);
-            DrawBoardSquareCoordinates();
+        public void GameOverScreen(EnumGameStatus e) {
+            if (e == EnumGameStatus.WHITE_WIN) {
+                Console.Clear();
+                InitializeTilesWithDefaultType();
+                DrawSquare(0,0, 64, new Tile(TileTypes.Gold));
+            }
+
+            if (e == EnumGameStatus.BLACK_WIN) {
+                Console.Clear();
+                InitializeTilesWithDefaultType();
+                DrawSquare(0, 0, 64, new Tile(TileTypes.Gold));
+
+            }
+
+            TileType letterFill = TileTypes.Black;
+            // G
+            SetTileMap(18, 15, new Tile(letterFill));
+            SetTileMap(18, 16, new Tile(letterFill));
+            SetTileMap(18, 17, new Tile(letterFill));
+            SetTileMap(18, 18, new Tile(letterFill));
+            SetTileMap(18, 19, new Tile(letterFill));
+            
+            SetTileMap(19, 15, new Tile(letterFill));
+            SetTileMap(20, 15, new Tile(letterFill));
+            SetTileMap(21, 15, new Tile(letterFill));
+            SetTileMap(22, 15, new Tile(letterFill));
+            SetTileMap(23, 15, new Tile(letterFill));
+            SetTileMap(24, 15, new Tile(letterFill));
+            SetTileMap(25, 15, new Tile(letterFill));
+            SetTileMap(26, 15, new Tile(letterFill));
+            SetTileMap(27, 15, new Tile(letterFill));
+
+
+
+            // A
+
+            // M
+
+            // E
+
+            // O
+
+            // V
+
+            // E
+
+            // R
+
+            // !
 
             // Draw the tiles to the screen
-            for (int row = 0; row < GameBoard.Size; row++)
-            {
+            for (int row = 0; row < GameBoard.Size; row++) {
                 for (int col = 0; col < GameBoard.Size; col++)
                 {
                     GetTileMap(row, col).type.Render();
@@ -32,27 +72,43 @@ namespace ConsoleChess
                 SetupNextLine();
             }
         }
-        private void SetupNextLine()
+
+        public void TypeGameOver()
         {
+        }
+
+        public void Render(GameBoard gameBoard) {
+            Console.Clear();
+            DrawGameBoardSquares();
+            DrawGamePieces(gameBoard);
+            DrawBoardSquareCoordinates();
+
+            // Draw the tiles to the screen
+            for (int row = 0; row < GameBoard.Size; row++) {
+                for (int col = 0; col < GameBoard.Size; col++) {
+                    GetTileMap(row, col).type.Render();
+                }
+                SetupNextLine();
+            }
+        }
+
+        private void SetupNextLine() {
             // Prevents color from leaking to the right of tile
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.Black;
             Console.Write("                                                                ");
             Console.Write('\n');
         }
-        private Tile GetTileMap(int row, int col)
-        {
+
+        private Tile GetTileMap(int row, int col) {
             return tiles[col + (Size * row)];
         }
 
 
         // Primitive Drawing Tools
-        public void DrawSquare(int startColumn, int startRow, int len, Tile tile)
-        {
-            for (int row = startRow; row < startRow + len; row++)
-            {
-                for (int col = startColumn; col < startColumn + len; col++)
-                {
+        public void DrawSquare(int startColumn, int startRow, int len, Tile tile) {
+            for (int row = startRow; row < startRow + len; row++) {
+                for (int col = startColumn; col < startColumn + len; col++) {
                     SetTileMap(row, col, tile);
                 }
             }
@@ -63,17 +119,13 @@ namespace ConsoleChess
             
         }
        
-
-        private void SetTileMap(int row, int col, Tile tile)
-        {
+        private void SetTileMap(int row, int col, Tile tile) {
             tiles[col + (Size * row)] = tile;
         }
-        private void InitializeTilesWithDefaultType()
-        {
-            for (int row = 0; row < Size; row++)
-            {
-                for (int col = 0; col < Size; col++)
-                {
+
+        public void InitializeTilesWithDefaultType() {
+            for (int row = 0; row < Size; row++) {
+                for (int col = 0; col < Size; col++) {
                     SetTileMap(row, col, new Tile(TileTypes.Debug));
                 }
             }
@@ -85,10 +137,8 @@ namespace ConsoleChess
             int boardTiles = 8;
             int boardPixel = 8;
 
-            for (int i = 0; i < 8; i++)
-            {
-                if (i % 2 == 0)
-                {
+            for (int i = 0; i < 8; i++)  {
+                if (i % 2 == 0) {
                     DrawSquare(boardPixel * 0, i * boardPixel, boardTiles, new Tile(TileTypes.DarkGreen));
                     DrawSquare(boardPixel * 1, i * boardPixel, boardPixel, new Tile(TileTypes.Grey));
                     DrawSquare(boardPixel * 2, i * boardPixel, boardPixel, new Tile(TileTypes.DarkGreen));
@@ -98,8 +148,7 @@ namespace ConsoleChess
                     DrawSquare(boardPixel * 6, i * boardPixel, boardPixel, new Tile(TileTypes.DarkGreen));
                     DrawSquare(boardPixel * 7, i * boardPixel, boardPixel, new Tile(TileTypes.Grey));
                 }
-                else
-                {
+                else {
                     DrawSquare(boardPixel * 0, i * boardPixel, boardTiles, new Tile(TileTypes.Grey));
                     DrawSquare(boardPixel * 1, i * boardPixel, boardPixel, new Tile(TileTypes.DarkGreen));
                     DrawSquare(boardPixel * 2, i * boardPixel, boardPixel, new Tile(TileTypes.Grey));
@@ -111,12 +160,12 @@ namespace ConsoleChess
                 }
             }
         }
-        public void DrawPreviewSquare(int startRow, int startColumn)
-        {
+
+        public void DrawPreviewSquare(int startRow, int startColumn) {
             DrawSquare(startColumn, startRow, 8, new Tile(TileTypes.Cyan));
         }
-        public void DrawBoardSquareCoordinates()
-        {
+
+        public void DrawBoardSquareCoordinates(){
             // Row 1
             int n = 0;
             SetTileMap(n, 0, new Tile(TileTypes.OneOne));
@@ -201,127 +250,68 @@ namespace ConsoleChess
         
         public void DrawGamePieces(GameBoard gameBoard)
         {
-            for (int i = 0; i < 8; i++)
-            {
-                for (int j = 0; j < 8; j++)
-                {
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
                     BoardSquare boardSquare = gameBoard.GetBoardSquare(i, j);
                     // Check effects
-                    if (boardSquare.getPreview())
-                    {
-                        DrawPreviewSquare(i * 8,
-                                          j * 8);
+                    if (boardSquare.getPreview()) {
+                        DrawPreviewSquare(i * 8, j * 8);
                     }
 
                     // Check Pieces
-                    if (boardSquare.getPiece() is Queen)
-                    {
-                        if (boardSquare.getPiece().isWhite())
-                        {
-                            DrawQueen(i * 8,
-                                      j * 8,
-                                     new Tile(TileTypes.White),
-                                     new Tile(TileTypes.Black));
+                    if (boardSquare.getPiece() is Queen){
+                        if (boardSquare.getPiece().isWhite()) {
+                            DrawQueen(i * 8,j * 8, new Tile(TileTypes.White),new Tile(TileTypes.Black));
                         }
-                        else
-                        {
-                            DrawQueen(i * 8,
-                                      j * 8,
-                                     new Tile(TileTypes.DarkGrey),
-                                     new Tile(TileTypes.Black));
+                        else {
+                            DrawQueen(i * 8, j * 8, new Tile(TileTypes.DarkGrey), new Tile(TileTypes.Black));
                         }
                     }
-                    if (boardSquare.getPiece() is King)
-                    {
-                        if (boardSquare.getPiece().isWhite())
-                        {
-                            DrawKing(i * 8,
-                                     j * 8,
-                                     new Tile(TileTypes.White),
-                                     new Tile(TileTypes.Black));
+                    if (boardSquare.getPiece() is King) {
+                        if (boardSquare.getPiece().isWhite()) {
+                            DrawKing(i * 8,j * 8, new Tile(TileTypes.White), new Tile(TileTypes.Black));
                         }
-                        else
-                        {
-                            DrawKing(i * 8,
-                                     j * 8,
-                                     new Tile(TileTypes.DarkGrey),
-                                     new Tile(TileTypes.Black));
+                        else {
+                            DrawKing(i * 8,j * 8, new Tile(TileTypes.DarkGrey), new Tile(TileTypes.Black));
                         }
                     }
-                    if (boardSquare.getPiece() is Pawn)
-                    {
-                        if (boardSquare.getPiece().isWhite())
-                        {
-                            DrawPawn(i * 8,
-                                     j * 8,
-                                     new Tile(TileTypes.White),
-                                     new Tile(TileTypes.Black));
+                    if (boardSquare.getPiece() is Pawn) {
+                        if (boardSquare.getPiece().isWhite()) {
+                            DrawPawn(i * 8,j * 8, new Tile(TileTypes.White), new Tile(TileTypes.Black));
                         }
-                        else
-                        {
-                            DrawPawn(i * 8,
-                                     j * 8,
-                                     new Tile(TileTypes.DarkGrey),
-                                     new Tile(TileTypes.Black));
+                        else {
+                            DrawPawn(i * 8,j * 8, new Tile(TileTypes.DarkGrey),  new Tile(TileTypes.Black));
                         }
                     }
-                    if (boardSquare.getPiece() is Rook)
-                    {
-                        if (boardSquare.getPiece().isWhite())
-                        {
-                            DrawRook(i * 8,
-                                     j * 8,
-                                     new Tile(TileTypes.White),
-                                     new Tile(TileTypes.Black));
+                    if (boardSquare.getPiece() is Rook) {
+                        if (boardSquare.getPiece().isWhite()) {
+                            DrawRook(i * 8,j * 8, new Tile(TileTypes.White), new Tile(TileTypes.Black));
                         }
-                        else
-                        {
-                            DrawRook(i * 8,
-                                     j * 8,
-                                     new Tile(TileTypes.DarkGrey),
-                                     new Tile(TileTypes.Black));
+                        else {
+                            DrawRook(i * 8, j * 8, new Tile(TileTypes.DarkGrey), new Tile(TileTypes.Black));
                         }
                     }
-                    if (boardSquare.getPiece() is Bishop)
-                    {
-                        if (boardSquare.getPiece().isWhite())
-                        {
-                            DrawBishop(i * 8,
-                                       j * 8,
-                                       new Tile(TileTypes.White),
-                                       new Tile(TileTypes.Black));
+                    if (boardSquare.getPiece() is Bishop) {
+                        if (boardSquare.getPiece().isWhite()) {
+                            DrawBishop(i * 8, j * 8, new Tile(TileTypes.White), new Tile(TileTypes.Black));
                         }
-                        else
-                        {
-                            DrawBishop(i * 8,
-                                       j * 8,
-                                       new Tile(TileTypes.DarkGrey),
-                                       new Tile(TileTypes.Black));
+                        else {
+                            DrawBishop(i * 8, j * 8,  new Tile(TileTypes.DarkGrey), new Tile(TileTypes.Black));
                         }
                     }
-                    if (boardSquare.getPiece() is Knight)
-                    {
-                        if (boardSquare.getPiece().isWhite())
-                        {
-                            DrawKnight(i * 8,
-                                       j * 8,
-                                       new Tile(TileTypes.White),
-                                       new Tile(TileTypes.Black));
+                    if (boardSquare.getPiece() is Knight) {
+                        if (boardSquare.getPiece().isWhite()) {
+                            DrawKnight(i * 8, j * 8, new Tile(TileTypes.White), new Tile(TileTypes.Black));
                         }
-                        else
-                        {
-                            DrawKnight(i * 8,
-                                       j * 8,
-                                       new Tile(TileTypes.DarkGrey),
-                                       new Tile(TileTypes.Black));
+                        else {
+                            DrawKnight(i * 8, j * 8, new Tile(TileTypes.DarkGrey), new Tile(TileTypes.Black));
                         }
                     }
                 }
             }
         }
 
-        public void DrawKnight(int startRow,int startColumn, Tile pieceColor,Tile borderColor)
-        {
+        public void DrawKnight(int startRow,int startColumn, Tile pieceColor,Tile borderColor) {
             // Row 1
             int n = 0;
             SetTileMap(startRow + n, startColumn + 4, borderColor);
@@ -373,8 +363,8 @@ namespace ConsoleChess
             SetTileMap(startRow + n, startColumn + 5, borderColor);
             SetTileMap(startRow + n, startColumn + 6, borderColor);
         }
-        public void DrawPawn(int startRow,int startColumn, Tile pieceColor,Tile borderColor)
-        {
+
+        public void DrawPawn(int startRow,int startColumn, Tile pieceColor,Tile borderColor) {
             // Row 1
             // Row 2
             int n = 1;
@@ -417,8 +407,8 @@ namespace ConsoleChess
             SetTileMap(startRow + n, startColumn + 5, borderColor);
             SetTileMap(startRow + n, startColumn + 6, borderColor);
         }
-        public void DrawBishop(int startRow,int startColumn, Tile pieceColor,Tile borderColor)
-        {
+
+        public void DrawBishop(int startRow,int startColumn, Tile pieceColor,Tile borderColor) {
             // Row 1
             int n = 0;
             // Row 2
@@ -468,8 +458,8 @@ namespace ConsoleChess
             SetTileMap(startRow + n, startColumn + 5, borderColor);
             SetTileMap(startRow + n, startColumn + 6, borderColor);
         }
-        public void DrawKing(int startRow,int startColumn, Tile pieceColor,Tile borderColor)
-        {
+
+        public void DrawKing(int startRow,int startColumn, Tile pieceColor,Tile borderColor) {
             // Row 1
             int n = 0;
             // Row 2
@@ -514,8 +504,8 @@ namespace ConsoleChess
             SetTileMap(startRow + n, startColumn + 6, borderColor);
             SetTileMap(startRow + n, startColumn + 7, borderColor);
         }
-        public void DrawQueen(int startRow, int startColumn, Tile pieceColor, Tile borderColor)
-        {
+
+        public void DrawQueen(int startRow, int startColumn, Tile pieceColor, Tile borderColor) {
             // Row 1
             int n = 0;
             SetTileMap(startRow + n, startColumn + 4, new Tile(TileTypes.Gold));
@@ -565,8 +555,8 @@ namespace ConsoleChess
             SetTileMap(startRow + n, startColumn + 6, borderColor);
             SetTileMap(startRow + n, startColumn + 7, borderColor);
         }
-        public void DrawRook(int startRow, int startColumn, Tile pieceColor, Tile borderColor)
-        {
+
+        public void DrawRook(int startRow, int startColumn, Tile pieceColor, Tile borderColor) {
             // Row 1
             int n = 0;
             // Row 2

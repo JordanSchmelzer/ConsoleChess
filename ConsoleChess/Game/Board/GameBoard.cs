@@ -1,6 +1,5 @@
 ﻿using ConsoleChess.Pieces;
 using System;
-using System.Text.Json;
 
 namespace ConsoleChess
 {
@@ -12,35 +11,32 @@ namespace ConsoleChess
 
         public BoardSquare[,] boardSquare { get; set; }
 
-
         public GameBoard() {
             boardSquare = new BoardSquare[BoardSquaresPerRowCol, BoardSquaresPerRowCol];
         }
-        public BoardSquare GetBoardSquare(int x, int y)
-        {
-            if (x < 0 || x > 7 || y < 0 || y > 7)
-            {
+
+        public BoardSquare GetBoardSquare(int x, int y) {
+            if (x < 0 || x > 7 || y < 0 || y > 7) {
+                // something has gone wrong if this happens.
                 throw new Exception("Chess board index out of bound!");
             }
             return boardSquare[x, y];
         }
-        public void PlacePiece(int row, int col, IGamePiece piece)
-        {
+
+        public void PlacePiece(int row, int col, IGamePiece piece) {
             BoardSquare newSquare = new BoardSquare(row, col, piece);
             boardSquare[row, col] = newSquare;
         }
-        public void InitializeAllSquaresNull()
-        {
-            for(int i = 0; i < BoardSquaresPerRowCol; i++)
-            {
-                for (int j = 0; j < BoardSquaresPerRowCol; j++)
-                {
+
+        public void InitializeAllSquaresNull() {
+            for(int i = 0; i < BoardSquaresPerRowCol; i++) {
+                for (int j = 0; j < BoardSquaresPerRowCol; j++) {
                     this.boardSquare[i, j] = new BoardSquare(i, j, null);
                 }
             }
         }
-        public void ResetChessPiecesOnBoard()
-        {
+
+        public void ResetChessPiecesOnBoard() {
             // Initialize everything with null boardSquares
             InitializeAllSquaresNull();
 
@@ -82,16 +78,6 @@ namespace ConsoleChess
             PlacePiece(7, 5, new Bishop(true));
             PlacePiece(7, 6, new Knight(true));
             PlacePiece(7, 7, new Rook(true));
-        }
-    }
-
-    // Reflection deep clone
-    static class CloneExtensionn
-    {
-        public static T Clone<T>(this T obj)
-        {
-            string jsonString = JsonSerializer.Serialize(obj);
-            return JsonSerializer.Deserialize<T>(jsonString);
         }
     }
 }

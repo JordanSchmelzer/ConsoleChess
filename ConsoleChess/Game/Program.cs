@@ -5,8 +5,7 @@ namespace ConsoleChess
 {
     internal class Program
     {
-        public static void Main(string[] args)
-        {
+        public static void Main(string[] args) {
             // create a logger factory
             var loggerFactory = LoggerFactory.Create(
                 builder => builder
@@ -28,8 +27,7 @@ namespace ConsoleChess
             RunTitleMenu();
         }
 
-        static void RunTitleMenu()
-        {
+        static void RunTitleMenu() {
 
             string prompt = @"
 ________/\\\\\\\\\_________________________________________________________/\\\\\\_____________________________         
@@ -110,6 +108,10 @@ Welcome to Console Chess. Chess in the terminal!
         {
             Game game = new Game();
             EnumGameStatus gameEnding = game.Run();
+            G//ameRenderer render = new GameRenderer();
+            //render.GameOverScreen(gameEnding);
+            
+            Console.ReadKey(true);
             RunGame();
         }
         private static void ServerBrowser()

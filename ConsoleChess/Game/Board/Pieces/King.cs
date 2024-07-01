@@ -218,7 +218,6 @@ namespace ConsoleChess
             // If landing on null square allow this move
             if (move.getEnd().getPiece() == null)
             {
-                Console.WriteLine("Log: Diagonal Move Accepted");
                 return true;
             }
             return false;
@@ -228,7 +227,6 @@ namespace ConsoleChess
             // Check capture
             if (move.getEnd().getPiece() != null)
             {
-                Console.WriteLine("Log: Diagonal Capture Accepted");
                 return true;
             }
 

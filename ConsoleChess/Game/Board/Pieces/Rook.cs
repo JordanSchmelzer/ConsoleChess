@@ -76,7 +76,6 @@ namespace ConsoleChess.Pieces
         {
             if ((move.getEnd().piece == null))
             {
-                Console.WriteLine("Log: Ordinal Capture Accepted");
                 return true;
             }
             return false;
@@ -86,7 +85,6 @@ namespace ConsoleChess.Pieces
             // If landing on null square allow this move
             if (move.getEnd().piece != null)
             {
-                Console.WriteLine("Log: Ordinal Move Accepted");
                 return true;
             }
             return false;

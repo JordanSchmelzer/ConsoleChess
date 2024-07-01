@@ -21,8 +21,9 @@ namespace ConsoleChess
         public static HumanPlayer p1 = new HumanPlayer(true);
         public static HumanPlayer p2 = new HumanPlayer(false);
 
-        public Game() {
+        public Game() { 
             gameRenderer = new GameRenderer();
+            gameRenderer.InitializeTilesWithDefaultType();
         }
 
         private void Initialize(Player p1, Player p2) {
@@ -35,9 +36,11 @@ namespace ConsoleChess
 
             if (p1.isWhiteSide()) {
                 this.currentPlayer = p1;
+                this.enemyPlayer = p2;
             }
             else {
                 this.currentPlayer = p2;
+                this.enemyPlayer = p1;
             }
             movesPlayed.Clear();
         }
@@ -58,14 +61,17 @@ namespace ConsoleChess
                             if (isGameOver(gameBoard, currentPlayer))
                             {
                                 if (currentPlayer.isWhiteSide()){
-                                    WriteLine("White Wins");
+                                    WriteLine("Checkmate! White Wins!");
+                                    WriteLine("Press any key to return to menu. . .");
+                                    ReadKey(true);
+                                    return EnumGameStatus.WHITE_WIN;
                                 }
                                 else{
-                                    WriteLine("Black Wins!");
+                                    WriteLine("Checkmate! Black Wins!");
+                                    WriteLine("Press any key to return to menu. . .");
+                                    ReadKey(true);
+                                    return EnumGameStatus.BLACK_WIN;
                                 }
-                                WriteLine("GAME OVER! \nPress any key to return to menu. . .");
-                                ReadKey(true);
-                                return 0;
                             }
                             SwitchActivePlayer();
                         }
@@ -102,9 +108,17 @@ namespace ConsoleChess
             // does any of these moves end check?
             int validMovesCounter = 0;
             foreach (Move move in possibleMoves) {
-                if (move.getStart().getPiece().CanMove(move))
-                {
-                    validMovesCounter++;
+                if (move.getStart().getPiece().CanMove(move)) {
+                    // for each active threat, can it still attack the king after this move if it goes through?
+                    foreach (BoardSquare threatLocation in activeThreats)
+                    {
+                        Move threatMove = new Move(currentPlayer, threatLocation, enemyKingSquare, gameBoard);
+                        if (!threatLocation.getPiece().CanMove(threatMove))
+                        {
+                            // if the threat cant move, this is a valid move to get out of check
+                            validMovesCounter++;
+                        }
+                    }
                 }
             }
             // if no move exists to exit check state, game over
@@ -280,33 +294,27 @@ namespace ConsoleChess
             this.gameStatus = status;
         }
 
-        private void SwitchActivePlayer()
-        {
-            if (this.currentPlayer == players[0])
-            {
+        private void SwitchActivePlayer() {
+            if (this.currentPlayer == players[0]) {
                 this.currentPlayer = players[1];
                 this.enemyPlayer = players[0];
             }
-            else
-            {
+            else {
                 this.currentPlayer = players[0];
                 this.enemyPlayer = players[1];
             }
         }
 
-        public bool IsPlayersKingInCheck()
-        {
+        public bool IsPlayersKingInCheck() {
             BoardSquare kingSquare = ReturnPlayersKingBoardSquare();
             List<BoardSquare> attackVectors = PottentialAttackersBoardSquares(kingSquare);
             List<BoardSquare> activeThreats = AttackingPieces(attackVectors, kingSquare);
 
             // of all the potential attack squares, there are no pieces able to attack the king
-            if (activeThreats.Count == 0)
-            {
+            if (activeThreats.Count == 0) {
                 return false;
             }
-            if (activeThreats.Count > 0)
-            {
+            if (activeThreats.Count > 0) {
                 return true;
             }
             return false;
@@ -323,7 +331,6 @@ namespace ConsoleChess
                 if (potentialAttackerSquare != null) {
                     Move checkMove = new Move(currentPlayer, potentialAttackerSquare, kingSquare, gameBoard);
                     if (potentialAttackerSquare.piece.CanMove(checkMove)) {
-                        Console.WriteLine($"King is in check from: {potentialAttackerSquare.piece}");
                         activeThreats.Add(potentialAttackerSquare);
                     }
                 }
@@ -336,35 +343,35 @@ namespace ConsoleChess
             List<BoardSquare> attackVectors = new List<BoardSquare>();
             BoardSquare boardSquare;
 
-            boardSquare = FirstVisiblePieceInDirection(gameBoard, kingSquare, EnumMoveDirections.SOUTH, currentPlayer);
+            boardSquare = FirstVisiblePieceInDirection(gameBoard, kingSquare, EnumMoveDirections.SOUTH, enemyPlayer);
             if (boardSquare != null) {
                 attackVectors.Add(boardSquare); 
             }
-            boardSquare = FirstVisiblePieceInDirection(gameBoard, kingSquare, EnumMoveDirections.NORTH, currentPlayer);
+            boardSquare = FirstVisiblePieceInDirection(gameBoard, kingSquare, EnumMoveDirections.NORTH, enemyPlayer);
             if (boardSquare != null) { 
                 attackVectors.Add(boardSquare); 
             }
-            boardSquare = FirstVisiblePieceInDirection(gameBoard, kingSquare, EnumMoveDirections.EAST, currentPlayer);
+            boardSquare = FirstVisiblePieceInDirection(gameBoard, kingSquare, EnumMoveDirections.EAST, enemyPlayer);
             if (boardSquare != null) {
                 attackVectors.Add(boardSquare); 
             }
-            boardSquare = FirstVisiblePieceInDirection(gameBoard, kingSquare, EnumMoveDirections.WEST, currentPlayer);
+            boardSquare = FirstVisiblePieceInDirection(gameBoard, kingSquare, EnumMoveDirections.WEST, enemyPlayer);
             if (boardSquare != null) { 
                 attackVectors.Add(boardSquare);
             }
-            boardSquare = FirstVisiblePieceInDirection(gameBoard, kingSquare, EnumMoveDirections.NORTHEAST, currentPlayer);
+            boardSquare = FirstVisiblePieceInDirection(gameBoard, kingSquare, EnumMoveDirections.NORTHEAST, enemyPlayer);
             if (boardSquare != null) { 
                 attackVectors.Add(boardSquare);
             }
-            boardSquare = FirstVisiblePieceInDirection(gameBoard, kingSquare, EnumMoveDirections.NORTHWEST, currentPlayer);
+            boardSquare = FirstVisiblePieceInDirection(gameBoard, kingSquare, EnumMoveDirections.NORTHWEST, enemyPlayer);
             if (boardSquare != null) { 
                 attackVectors.Add(boardSquare); 
             }
-            boardSquare = FirstVisiblePieceInDirection(gameBoard, kingSquare, EnumMoveDirections.SOUTHWEST, currentPlayer);
+            boardSquare = FirstVisiblePieceInDirection(gameBoard, kingSquare, EnumMoveDirections.SOUTHWEST, enemyPlayer);
             if (boardSquare != null) { 
                 attackVectors.Add(boardSquare); 
             }
-            boardSquare = FirstVisiblePieceInDirection(gameBoard, kingSquare, EnumMoveDirections.SOUTHEAST, currentPlayer);
+            boardSquare = FirstVisiblePieceInDirection(gameBoard, kingSquare, EnumMoveDirections.SOUTHEAST, enemyPlayer);
             if (boardSquare != null) {
                 attackVectors.Add(boardSquare); 
             }
@@ -422,7 +429,7 @@ namespace ConsoleChess
                 BoardSquare potentialKnight = gameBoard.GetBoardSquare(deltaRow, deltaCol);
                 if (potentialKnight.getPiece() is Knight &&
                     potentialKnight.getPiece().isWhite() !=
-                    currentPlayer.isWhiteSide()) {
+                    kingSquare.piece.isWhite()) {
                     return potentialKnight;
                 }
             }
@@ -542,8 +549,10 @@ namespace ConsoleChess
             for(int row = 0; row < 8; row++) {
                 for (int col = 0; col < 8; col++) {
                     playerPieceLocation = gameBoard.GetBoardSquare(row, col);
-                    if (player.isWhiteSide() == playerPieceLocation.getPiece().isWhite()) {
-                        listOfPlayerPieces.Add(playerPieceLocation);
+                    if (playerPieceLocation.getPiece() != null){
+                        if (player.isWhiteSide() == playerPieceLocation.getPiece().isWhite()) {
+                            listOfPlayerPieces.Add(playerPieceLocation);
+                        }
                     }
                 }
             }
