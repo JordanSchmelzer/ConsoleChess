@@ -29,12 +29,15 @@ namespace ConsoleChess
 
             TileType letterFill = TileTypes.Black;
             // G
+            int rowChar = 0;
+            int colChar = 0;
+            // -
             SetTileMap(18, 15, new Tile(letterFill));
             SetTileMap(18, 16, new Tile(letterFill));
             SetTileMap(18, 17, new Tile(letterFill));
             SetTileMap(18, 18, new Tile(letterFill));
             SetTileMap(18, 19, new Tile(letterFill));
-            
+            // |
             SetTileMap(19, 15, new Tile(letterFill));
             SetTileMap(20, 15, new Tile(letterFill));
             SetTileMap(21, 15, new Tile(letterFill));
@@ -44,14 +47,95 @@ namespace ConsoleChess
             SetTileMap(25, 15, new Tile(letterFill));
             SetTileMap(26, 15, new Tile(letterFill));
             SetTileMap(27, 15, new Tile(letterFill));
-
+            SetTileMap(27, 15, new Tile(letterFill));
+            // _
+            SetTileMap(27, 16, new Tile(letterFill));
+            SetTileMap(27, 17, new Tile(letterFill));
+            SetTileMap(27, 18, new Tile(letterFill));
+            SetTileMap(27, 19, new Tile(letterFill));
+            // '
+            SetTileMap(25, 19, new Tile(letterFill));
+            SetTileMap(26, 19, new Tile(letterFill));
+            SetTileMap(27, 19, new Tile(letterFill));
+            // -
+            SetTileMap(24, 17, new Tile(letterFill));
+            SetTileMap(24, 18, new Tile(letterFill));
 
 
             // A
+            // -
+            SetTileMap(19, 23, new Tile(letterFill));
+            SetTileMap(19, 24, new Tile(letterFill));
+            SetTileMap(19, 25, new Tile(letterFill));
+            // -
+            SetTileMap(23, 23, new Tile(letterFill));
+            SetTileMap(23, 24, new Tile(letterFill));
+            SetTileMap(23, 25, new Tile(letterFill));
+            // |
+            SetTileMap(19, 22, new Tile(letterFill));
+            SetTileMap(20, 22, new Tile(letterFill));
+            SetTileMap(21, 22, new Tile(letterFill));
+            SetTileMap(22, 22, new Tile(letterFill));
+            SetTileMap(23, 22, new Tile(letterFill));
+            SetTileMap(24, 22, new Tile(letterFill));
+            SetTileMap(25, 22, new Tile(letterFill));
+            SetTileMap(26, 22, new Tile(letterFill));
+            SetTileMap(27, 22, new Tile(letterFill));
+            SetTileMap(27, 22, new Tile(letterFill));
+            // |
+            SetTileMap(19, 26, new Tile(letterFill));
+            SetTileMap(20, 26, new Tile(letterFill));
+            SetTileMap(21, 26, new Tile(letterFill));
+            SetTileMap(22, 26, new Tile(letterFill));
+            SetTileMap(23, 26, new Tile(letterFill));
+            SetTileMap(24, 26, new Tile(letterFill));
+            SetTileMap(25, 26, new Tile(letterFill));
+            SetTileMap(26, 26, new Tile(letterFill));
+            SetTileMap(27, 26, new Tile(letterFill));
+            SetTileMap(27, 26, new Tile(letterFill));
 
             // M
+            // |
+            SetTileMap(19, 28, new Tile(letterFill));
+            SetTileMap(20, 28, new Tile(letterFill));
+            SetTileMap(21, 28, new Tile(letterFill));
+            SetTileMap(22, 28, new Tile(letterFill));
+            SetTileMap(23, 28, new Tile(letterFill));
+            SetTileMap(24, 28, new Tile(letterFill));
+            SetTileMap(25, 28, new Tile(letterFill));
+            SetTileMap(26, 28, new Tile(letterFill));
+            SetTileMap(27, 28, new Tile(letterFill));
+            SetTileMap(27, 28, new Tile(letterFill));
+            // |
+            SetTileMap(19, 35, new Tile(letterFill));
+            SetTileMap(20, 35, new Tile(letterFill));
+            SetTileMap(21, 35, new Tile(letterFill));
+            SetTileMap(22, 35, new Tile(letterFill));
+            SetTileMap(23, 35, new Tile(letterFill));
+            SetTileMap(24, 35, new Tile(letterFill));
+            SetTileMap(25, 35, new Tile(letterFill));
+            SetTileMap(26, 35, new Tile(letterFill));
+            SetTileMap(27, 35, new Tile(letterFill));
+            SetTileMap(27, 35, new Tile(letterFill));
+            // \/
+            SetTileMap(19, 30, new Tile(letterFill));
+            SetTileMap(20, 31, new Tile(letterFill));
+            SetTileMap(21, 32, new Tile(letterFill));
+            SetTileMap(20, 33, new Tile(letterFill));
+            SetTileMap(19, 34, new Tile(letterFill));
 
             // E
+            // |
+            SetTileMap(19, 33, new Tile(letterFill));
+            SetTileMap(20, 33, new Tile(letterFill));
+            SetTileMap(21, 33, new Tile(letterFill));
+            SetTileMap(22, 33, new Tile(letterFill));
+            SetTileMap(23, 33, new Tile(letterFill));
+            SetTileMap(24, 33, new Tile(letterFill));
+            SetTileMap(25, 33, new Tile(letterFill));
+            SetTileMap(26, 33, new Tile(letterFill));
+            SetTileMap(27, 33, new Tile(letterFill));
+            SetTileMap(27, 33, new Tile(letterFill));
 
             // O
 

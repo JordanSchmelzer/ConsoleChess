@@ -108,9 +108,11 @@ Welcome to Console Chess. Chess in the terminal!
         {
             Game game = new Game();
             EnumGameStatus gameEnding = game.Run();
-            G//ameRenderer render = new GameRenderer();
+            // way too painful         
+            //GameRenderer render = new GameRenderer();
             //render.GameOverScreen(gameEnding);
-            
+            PrintGameOver();
+            Console.WriteLine("Press any key to continue. . .");
             Console.ReadKey(true);
             RunGame();
         }
@@ -213,5 +215,37 @@ c$$$cc$$$c  $$""""""""Y$$$$$,     $$$$$      $$$     $$
             Console.ReadKey(true);
             Environment.Exit(0);
         }
+
+        private static void PrintGameOver()
+        {
+            Console.Clear();
+            string s = @"
+ ________  ___  ___  _______   ________  ___  __    _____ ______   ________  _________  _______   ___       
+|\   ____\|\  \|\  \|\  ___ \ |\   ____\|\  \|\  \ |\   _ \  _   \|\   __  \|\___   ___\\  ___ \ |\  \      
+\ \  \___|\ \  \\\  \ \   __/|\ \  \___|\ \  \/  /|\ \  \\\__\ \  \ \  \|\  \|___ \  \_\ \   __/|\ \  \     
+ \ \  \    \ \   __  \ \  \_|/_\ \  \    \ \   ___  \ \  \\|__| \  \ \   __  \   \ \  \ \ \  \_|/_\ \  \    
+  \ \  \____\ \  \ \  \ \  \_|\ \ \  \____\ \  \\ \  \ \  \    \ \  \ \  \ \  \   \ \  \ \ \  \_|\ \ \__\   
+   \ \_______\ \__\ \__\ \_______\ \_______\ \__\\ \__\ \__\    \ \__\ \__\ \__\   \ \__\ \ \_______\|__|   
+    \|_______|\|__|\|__|\|_______|\|_______|\|__| \|__|\|__|     \|__|\|__|\|__|    \|__|  \|_______|   ___ 
+                                                                                                       |\__\
+                                                                                                       \|__|
+                                                                                                            
+ ________  ________  _____ ______   _______           ________  ___      ___ _______   ________  ___        
+|\   ____\|\   __  \|\   _ \  _   \|\  ___ \         |\   __  \|\  \    /  /|\  ___ \ |\   __  \|\  \       
+\ \  \___|\ \  \|\  \ \  \\\__\ \  \ \   __/|        \ \  \|\  \ \  \  /  / | \   __/|\ \  \|\  \ \  \      
+ \ \  \  __\ \   __  \ \  \\|__| \  \ \  \_|/__       \ \  \\\  \ \  \/  / / \ \  \_|/_\ \   _  _\ \  \     
+  \ \  \|\  \ \  \ \  \ \  \    \ \  \ \  \_|\ \       \ \  \\\  \ \    / /   \ \  \_|\ \ \  \\  \\ \__\    
+   \ \_______\ \__\ \__\ \__\    \ \__\ \_______\       \ \_______\ \__/ /     \ \_______\ \__\\ _\\|__|    
+    \|_______|\|__|\|__|\|__|     \|__|\|_______|        \|_______|\|__|/       \|_______|\|__|\|__|   ___  
+                                                                                                      |\__\ 
+                                                                                                      \|__| 
+                                                                                                            
+";
+            Console.WriteLine(s);
+            Console.WriteLine("Thank you for playing my game!\nC# is pretty good I suppose.");
+            Console.WriteLine("If I could change anything, I'd increase the render speed of the windows terminal.");
+
+        }
+
     }
 }
